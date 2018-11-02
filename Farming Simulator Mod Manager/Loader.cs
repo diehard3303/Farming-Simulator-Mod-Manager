@@ -138,60 +138,13 @@ namespace Farming_Simulator_Mod_Manager {
         /// <summary>
         /// Profiles the mod loader.
         /// </summary>
-        /// <param name="prof">The prof.</param>
         /// <returns></returns>
-        public static IEnumerable<string> ProfileModLoader(string prof) {
-            var reg = new RegWork(true);
-            var gam = reg.Read(RegKeys.CURRENT_GAME);
+        public static IEnumerable<string> ProfileModLoader() {
             var lst = new List<string>();
-            Dictionary<string, string> dic;
+            var dic = Utils.GetProfileFileList();
 
-            switch (gam) {
-                case "FS11":
-                    // lst = GetFilesFolders.GetFiles(reg.Read(Fs11RegKeys.FS11_PROFILES) + @"\" + prof + @"\", ZIP_S); 
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs11RegKeys.FS11_PROFILES) + @"\" + prof + @"\" +
-                                                           prof + ".xml");
-                    foreach (var v in dic) {
-                        lst.Add(v.Key);
-                    }
-
-                    break;
-                case "FS13":
-                    //lst = GetFilesFolders.GetFiles(reg.Read(Fs13RegKeys.FS13_PROFILES) + @"\" + prof + @"\", ZIP_S);
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs13RegKeys.FS13_PROFILES) + @"\" + prof + @"\" +
-                                                           prof + ".xml");
-                    foreach (var v in dic) {
-                        lst.Add(v.Key);
-                    }
-
-                    break;
-                case "FS15":
-                    //lst = GetFilesFolders.GetFiles(reg.Read(Fs15RegKeys.FS15_PROFILES) + @"\" + prof + @"\", ZIP_S);
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs15RegKeys.FS15_PROFILES) + @"\" + prof + @"\" +
-                                                           prof + ".xml");
-                    foreach (var v in dic) {
-                        lst.Add(v.Key);
-                    }
-
-                    break;
-                case "FS17":
-                    //lst = GetFilesFolders.GetFiles(reg.Read(Fs17RegKeys.FS17_PROFILES) + @"\" + prof + @"\", ZIP_S);
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs17RegKeys.FS17_PROFILES) + @"\" + prof + @"\" +
-                                                           prof + ".xml");
-                    foreach (var v in dic) {
-                        lst.Add(v.Key);
-                    }
-
-                    break;
-                case "FS19":
-                    //lst = GetFilesFolders.GetFiles(reg.Read(FS19RegKeys.FS19_PROFILES) + @"\" + prof + @"\", ZIP_S);
-                    dic = Serializer.DeserializeDictionary(reg.Read(FS19RegKeys.FS19_PROFILES) + @"\" + prof + @"\" +
-                                                           prof + ".xml");
-                    foreach (var v in dic) {
-                        lst.Add(v.Key);
-                    }
-
-                    break;
+            foreach (var v in dic) {
+                lst.Add(v.Key);
             }
 
             return lst;

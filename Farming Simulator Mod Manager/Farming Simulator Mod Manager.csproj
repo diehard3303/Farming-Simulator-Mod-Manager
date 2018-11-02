@@ -112,6 +112,7 @@
       <Compile Include="FSZip.cs"/>
       <Compile Include="GameInfo.cs"/>
       <Compile Include="GetFilesFolders.cs"/>
+      <Compile Include="Hasher.cs"/>
       <Compile Include="InitFarmSim.cs"/>
       <Compile Include="ListCreator.cs"/>
       <Compile Include="Loader.cs"/>
@@ -136,6 +137,7 @@
           <DependentUpon>Specials.cs</DependentUpon>
       </Compile>
       <Compile Include="SymLinks.cs"/>
+      <Compile Include="UpdateSystem.cs"/>
       <Compile Include="Utils.cs"/>
       <Compile Include="Vars.cs"/>
       <Compile Include="Working.cs"/>

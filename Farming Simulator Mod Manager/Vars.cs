@@ -30,17 +30,17 @@ using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 
 namespace Farming_Simulator_Mod_Manager {
-	internal static class Vars {
-		/// <summary>
-		///     The quote_ mark
-		/// </summary>
-		private const string QUOTE_MARK = "\"";
+    internal static class Vars {
+        /// <summary>
+        ///     The quote_ mark
+        /// </summary>
+        private const string QUOTE_MARK = "\"";
 
-		/// <summary>
-		///     Gets the quote mark.
-		/// </summary>
-		/// <value>The quote mark.</value>
-		public static string QuoteMark => QUOTE_MARK;
+        /// <summary>
+        ///     Gets the quote mark.
+        /// </summary>
+        /// <value>The quote mark.</value>
+        public static string QuoteMark => QUOTE_MARK;
 
         /// <summary>
         /// Gets or sets the name of the field.
@@ -72,11 +72,11 @@ namespace Farming_Simulator_Mod_Manager {
         /// <returns></returns>
         public static string SortedFileListCompletePath() {
             var reg = new RegWork(true);
-            var gi =new GameInfo();
-	        var gam = gi.GetGame();
-	        var pth = string.Empty;
+            var gi = new GameInfo();
+            var gam = gi.GetGame();
+            var pth = string.Empty;
 
-	        switch (gam) {
+            switch (gam) {
                 case "FS11":
                     pth = reg.Read(Fs11RegKeys.FS11_XML) + "sortedFileListComplete.xml";
                     break;
@@ -92,9 +92,33 @@ namespace Farming_Simulator_Mod_Manager {
                 case "FS19":
                     pth = reg.Read(FS19RegKeys.FS19_XML) + "sortedFileListComplete.xml";
                     break;
-	        }
+            }
 
-	        return pth;
-	    }
-	}
+            return pth;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [hard link].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [hard link]; otherwise, <c>false</c>.
+        /// </value>
+        public static bool HardLink { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [soft link].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [soft link]; otherwise, <c>false</c>.
+        /// </value>
+        public static bool SoftLink { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [file copy].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [file copy]; otherwise, <c>false</c>.
+        /// </value>
+        public static bool FileCopy { get; set; }
+    }
 }

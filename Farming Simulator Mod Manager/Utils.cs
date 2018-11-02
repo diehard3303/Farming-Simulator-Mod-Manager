@@ -27,13 +27,157 @@
 //
 
 using System;
+using System.Collections.Generic;
 
 namespace Farming_Simulator_Mod_Manager {
-    internal static class Utils {
+    internal class Utils {
         /// <summary>
         ///     Gets the app path.
         /// </summary>
         /// <value>The application path.</value>
         public static string AppPath => AppDomain.CurrentDomain.BaseDirectory;
+
+        /// <summary>
+        /// Gets the file listing.
+        /// </summary>
+        /// <returns>dictionary</returns>
+        public static Dictionary<string, string> GetFileListing() {
+            Dictionary<string, string> dic = null;
+            var gi = new GameInfo();
+            var gam = gi.GetGame();
+            var reg = new RegWork(true);
+
+            switch (gam) {
+                case "FS11":
+                    dic = Serializer.DeserializeDictionary(
+                        reg.Read(Fs11RegKeys.FS11_XML) + "sortedFileListComplete.xml");
+                    break;
+                case "FS13":
+                    dic = Serializer.DeserializeDictionary(
+                        reg.Read(Fs13RegKeys.FS13_XML) + "sortedFileListComplete.xml");
+                    break;
+                case "FS15":
+                    dic = Serializer.DeserializeDictionary(
+                        reg.Read(Fs15RegKeys.FS15_XML) + "sortedFileListComplete.xml");
+                    break;
+                case "FS17":
+                    dic = Serializer.DeserializeDictionary(
+                        reg.Read(Fs17RegKeys.FS17_XML) + "sortedFileListComplete.xml");
+                    break;
+                case "FS19":
+                    dic = Serializer.DeserializeDictionary(
+                        reg.Read(FS19RegKeys.FS19_XML) + "sortedFileListComplete.xml");
+                    break;
+            }
+
+            return dic;
+        }
+
+        /// <summary>
+        /// Gets the hash listing.
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetHashListing() {
+            Dictionary<string, string> dic = null;
+            var gi = new GameInfo();
+            var gam = gi.GetGame();
+            var reg = new RegWork(true);
+
+            switch (gam) {
+                case "FS11":
+                    dic = Serializer.DeserializeDictionary(
+                        reg.Read(Fs11RegKeys.FS11_XML) + "hash.xml");
+                    break;
+                case "FS13":
+                    dic = Serializer.DeserializeDictionary(
+                        reg.Read(Fs13RegKeys.FS13_XML) + "hash.xml");
+                    break;
+                case "FS15":
+                    dic = Serializer.DeserializeDictionary(
+                        reg.Read(Fs15RegKeys.FS15_XML) + "hash.xml");
+                    break;
+                case "FS17":
+                    dic = Serializer.DeserializeDictionary(
+                        reg.Read(Fs17RegKeys.FS17_XML) + "hash.xml");
+                    break;
+                case "FS19":
+                    dic = Serializer.DeserializeDictionary(
+                        reg.Read(FS19RegKeys.FS19_XML) + "hash.xml");
+                    break;
+            }
+
+            return dic;
+
+        }
+
+        /// <summary>
+        /// Gets the group file list.
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetProfileFileList() {
+            Dictionary<string, string> dic = null;
+            var gi = new GameInfo();
+            var gam = gi.GetGame();
+            var reg = new RegWork(true);
+
+            switch (gam) {
+                case "FS11":
+                    dic = Serializer.DeserializeDictionary(reg.Read(Fs11RegKeys.FS11_PROFILES) +
+                        reg.Read(RegKeys.CURRENT_PROFILE) + @"\" + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
+                    break;
+                case "FS13":
+                    dic = Serializer.DeserializeDictionary(reg.Read(Fs13RegKeys.FS13_PROFILES) +
+                                                           reg.Read(RegKeys.CURRENT_PROFILE) + @"\" + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
+                    break;
+                case "FS15":
+                    dic = Serializer.DeserializeDictionary(reg.Read(Fs15RegKeys.FS15_PROFILES) +
+                                                           reg.Read(RegKeys.CURRENT_PROFILE) + @"\" + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
+                    break;
+                case "FS17":
+                    dic = Serializer.DeserializeDictionary(reg.Read(Fs17RegKeys.FS17_PROFILES) +
+                                                           reg.Read(RegKeys.CURRENT_PROFILE) + @"\" + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
+                    break;
+                case "FS19":
+                    dic = Serializer.DeserializeDictionary(reg.Read(FS19RegKeys.FS19_PROFILES) +
+                                                           reg.Read(RegKeys.CURRENT_PROFILE) + @"\" + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
+                    break;
+            }
+
+            return dic;
+
+        }
+
+        /// <summary>
+        /// Gets the group file listing.
+        /// </summary>
+        /// <param name="grp">The GRP.</param>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetGroupFileListing(string grp) {
+            Dictionary<string, string> dic = null;
+            var gi = new GameInfo();
+            var gam = gi.GetGame();
+            var reg = new RegWork(true);
+
+            switch (gam) {
+                case "FS11":
+                    dic = Serializer.DeserializeDictionary(reg.Read(Fs11RegKeys.FS11_GROUPS) + grp + @"\" + grp + ".xml");
+                    break;
+                case "FS13":
+                    dic = Serializer.DeserializeDictionary(reg.Read(Fs13RegKeys.FS13_GROUPS) + grp + @"\" + grp + ".xml");
+                    break;
+                case "FS15":
+                    dic = Serializer.DeserializeDictionary(reg.Read(Fs15RegKeys.FS15_GROUPS) + grp + @"\" + grp + ".xml");
+                    break;
+                case "FS17":
+                    dic = Serializer.DeserializeDictionary(reg.Read(Fs17RegKeys.FS17_GROUPS) + grp + @"\" + grp + ".xml");
+                    break;
+                case "FS19":
+                    dic = Serializer.DeserializeDictionary(reg.Read(FS19RegKeys.FS19_GROUPS) + grp + @"\" + grp + ".xml");
+                    break;
+            }
+
+            return dic;
+
+        }
     }
 }

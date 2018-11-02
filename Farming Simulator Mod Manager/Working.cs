@@ -51,6 +51,7 @@ namespace Farming_Simulator_Mod_Manager {
                                                             + Vars.QuoteMark
                                                             + "True" + Vars.QuoteMark
                                                             + " directory=";
+
         /// <summary>
         /// 
         /// </summary>
@@ -102,7 +103,8 @@ namespace Farming_Simulator_Mod_Manager {
                     ls.CreateSortedLists();
                     ls.SortedFileListComplete();
 
-                    lst = GetFilesFolders.GetFiles(reg.Read(Fs13RegKeys.FS13_GROUPS) + Vars.FolderName + @"\", SEARCH_PATTERN);
+                    lst = GetFilesFolders.GetFiles(reg.Read(Fs13RegKeys.FS13_GROUPS) + Vars.FolderName + @"\",
+                        SEARCH_PATTERN);
                     break;
 
                 case FS15:
@@ -114,7 +116,8 @@ namespace Farming_Simulator_Mod_Manager {
                     ls.CreateSortedLists();
                     ls.SortedFileListComplete();
 
-                    lst = GetFilesFolders.GetFiles(reg.Read(Fs15RegKeys.FS15_GROUPS) + Vars.FolderName + @"\", SEARCH_PATTERN);
+                    lst = GetFilesFolders.GetFiles(reg.Read(Fs15RegKeys.FS15_GROUPS) + Vars.FolderName + @"\",
+                        SEARCH_PATTERN);
                     break;
 
                 case FS17:
@@ -126,7 +129,8 @@ namespace Farming_Simulator_Mod_Manager {
                     ls.CreateSortedLists();
                     ls.SortedFileListComplete();
 
-                    lst = GetFilesFolders.GetFiles(reg.Read(Fs17RegKeys.FS17_GROUPS) + Vars.FolderName + @"\", SEARCH_PATTERN);
+                    lst = GetFilesFolders.GetFiles(reg.Read(Fs17RegKeys.FS17_GROUPS) + Vars.FolderName + @"\",
+                        SEARCH_PATTERN);
 
                     break;
 
@@ -139,7 +143,8 @@ namespace Farming_Simulator_Mod_Manager {
                     ls.CreateSortedLists();
                     ls.SortedFileListComplete();
 
-                    lst = GetFilesFolders.GetFiles(reg.Read(FS19RegKeys.FS19_GROUPS) + Vars.FolderName + @"\", SEARCH_PATTERN);
+                    lst = GetFilesFolders.GetFiles(reg.Read(FS19RegKeys.FS19_GROUPS) + Vars.FolderName + @"\",
+                        SEARCH_PATTERN);
 
                     break;
             }
@@ -164,8 +169,7 @@ namespace Farming_Simulator_Mod_Manager {
                 case "FS11":
                     var profPth = reg.Read(Fs11RegKeys.FS11_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     prof = profPth + mod;
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs11RegKeys.FS11_XML) +
-                                                           @"\sortedFileListComplete.xml");
+                    dic = Utils.GetFileListing();
                     dic.TryGetValue(mod, out var fnd);
                     if (fnd.IsNullOrEmpty()) return;
                     var modPth = fnd + @"\" + mod;
@@ -183,8 +187,7 @@ namespace Farming_Simulator_Mod_Manager {
                 case "FS13":
                     profPth = reg.Read(Fs13RegKeys.FS13_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     prof = profPth + mod;
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs13RegKeys.FS13_XML) +
-                                                           @"\sortedFileListComplete.xml");
+                    dic = Utils.GetFileListing();
                     dic.TryGetValue(mod, out fnd);
                     if (fnd.IsNullOrEmpty()) return;
                     modPth = fnd + @"\" + mod;
@@ -202,8 +205,7 @@ namespace Farming_Simulator_Mod_Manager {
                 case "FS15":
                     profPth = reg.Read(Fs15RegKeys.FS15_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     prof = profPth + mod;
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs15RegKeys.FS15_XML) +
-                                                           @"\sortedFileListComplete.xml");
+                    dic = Utils.GetFileListing();
                     dic.TryGetValue(mod, out fnd);
                     if (fnd.IsNullOrEmpty()) return;
                     modPth = fnd + @"\" + mod;
@@ -221,8 +223,7 @@ namespace Farming_Simulator_Mod_Manager {
                 case "FS17":
                     profPth = reg.Read(Fs17RegKeys.FS17_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     prof = profPth + mod;
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs17RegKeys.FS17_XML) +
-                                                           @"\sortedFileListComplete.xml");
+                    dic = Utils.GetFileListing();
                     dic.TryGetValue(mod, out fnd);
                     if (fnd.IsNullOrEmpty()) return;
                     modPth = fnd + @"\" + mod;
@@ -240,8 +241,7 @@ namespace Farming_Simulator_Mod_Manager {
                 case "FS19":
                     profPth = reg.Read(FS19RegKeys.FS19_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     prof = profPth + mod;
-                    dic = Serializer.DeserializeDictionary(reg.Read(FS19RegKeys.FS19_XML) +
-                                                           @"\sortedFileListComplete.xml");
+                    dic = Utils.GetFileListing();
                     dic.TryGetValue(mod, out fnd);
                     if (fnd.IsNullOrEmpty()) return;
                     modPth = fnd + @"\" + mod;
@@ -520,33 +520,9 @@ namespace Farming_Simulator_Mod_Manager {
         /// <param name="key">The key.</param>
         public static void EditGroupMod(string key) {
             var reg = new RegWork(true);
-            var gam = reg.Read(RegKeys.CURRENT_GAME);
-            Dictionary<string, string> dic = null;
-            const string SORTED_LIST = "sortedFileListComplete.xml";
-            var pth = String.Empty;
-
-            switch (gam) {
-                case FS11:
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs11RegKeys.FS11_XML + SORTED_LIST));
-                    break;
-
-                case FS13:
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs13RegKeys.FS13_XML) + SORTED_LIST);
-                    break;
-
-                case FS15:
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs15RegKeys.FS15_XML) + SORTED_LIST);
-                    break;
-
-                case FS17:
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs17RegKeys.FS17_XML) + SORTED_LIST);
-                    break;
-
-                case FS19:
-                    dic = Serializer.DeserializeDictionary(reg.Read(FS19RegKeys.FS19_XML) + SORTED_LIST);
-                    break;
-            }
-
+            var pth = string.Empty;
+            var dic = Utils.GetFileListing();
+            
             if (dic != null && dic.Any(v => String.Equals(v.Key, key, StringComparison.OrdinalIgnoreCase)))
                 dic.TryGetValue(key, out pth);
 
@@ -563,48 +539,88 @@ namespace Farming_Simulator_Mod_Manager {
         /// </summary>
         /// <param name="mod">The mod.</param>
         public static void DeleteGroupMod(string mod) {
-            var reg = new RegWork(true);
             var lc = new ListCreator();
             lc.SortedFileListComplete(false);
-            var gam = reg.Read(RegKeys.CURRENT_GAME);
+            var dic = Utils.GetFileListing();
+            dic.TryGetValue(mod, out var fnd);
+            DeleteFiles.DeleteFilesOrFolders(fnd + @"\" + mod);
+            
+            lc.CreateSortedLists();
+            lc.SortedFileListComplete();
+        }
+
+        /// <summary>
+        /// Loads the folder.
+        /// </summary>
+        public static void LoadFolder(string grp) {
+            var gi = new GameInfo();
+            var gam = gi.GetGame();
+            var reg = new RegWork(true);
+            string prof;
+            var dic = Utils.GetGroupFileListing(grp);
+            var dic2 = Utils.GetProfileFileList(); ;
+            var frn = Application.OpenForms.OfType<Form1>().Single();
+            string profXml;
 
             switch (gam) {
-                case FS11:
-                    //DeleteFiles.DeleteFilesOrFolders(reg.Read(Fs11RegKeys.FS11_GROUPS) + @"\" +
-                    //Vars.FolderName + @"\" + lstGroupMods.SelectedItem);
-                    var dic = Serializer.DeserializeDictionary(
-                        reg.Read(Fs11RegKeys.FS11_XML) + SF_COMP_S);
-                    dic.TryGetValue(mod, out var fnd);
-                    DeleteFiles.DeleteFilesOrFolders(fnd + @"\" + mod);
+                case "FS11":
+                    prof = reg.Read(Fs11RegKeys.FS11_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
+                    profXml = prof + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml";
+                    foreach (var v in dic) {
+                        frn.CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
+                        if (dic.ContainsKey(v.Key)) continue;
+                        dic2.Add(v.Key, v.Value);
+                    }
+
+                    Serializer.SerializeDictionary(profXml, dic2);
                     break;
-                case FS13:
-                    dic = Serializer.DeserializeDictionary(
-                        reg.Read(Fs13RegKeys.FS13_XML) + SF_COMP_S);
-                    dic.TryGetValue(mod, out fnd);
-                    DeleteFiles.DeleteFilesOrFolders(fnd + @"\" + mod);
+                case "FS13":
+                    prof = reg.Read(Fs13RegKeys.FS13_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
+                    profXml = prof + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml";
+                    foreach (var v in dic) {
+                        frn.CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
+                        if (dic.ContainsKey(v.Key)) continue;
+                        dic2.Add(v.Key, v.Value);
+                    }
+
+                    Serializer.SerializeDictionary(profXml, dic2);
                     break;
-                case FS15:
-                    dic = Serializer.DeserializeDictionary(
-                        reg.Read(Fs15RegKeys.FS15_XML) + SF_COMP_S);
-                    dic.TryGetValue(mod, out fnd);
-                    DeleteFiles.DeleteFilesOrFolders(fnd + @"\" + mod);
+                case "FS15":
+                    prof = reg.Read(Fs15RegKeys.FS15_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
+                    profXml = prof + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml";
+                    foreach (var v in dic) {
+                        frn.CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
+                        if (dic.ContainsKey(v.Key)) continue;
+                        dic2.Add(v.Key, v.Value);
+                    }
+
+                    Serializer.SerializeDictionary(profXml, dic2);
                     break;
-                case FS17:
-                    dic = Serializer.DeserializeDictionary(
-                        reg.Read(Fs17RegKeys.FS17_XML) + SF_COMP_S);
-                    dic.TryGetValue(mod, out fnd);
-                    DeleteFiles.DeleteFilesOrFolders(fnd + @"\" + mod);
+                case "FS17":
+                    prof = reg.Read(Fs17RegKeys.FS17_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
+                    profXml = prof + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml";
+                    foreach (var v in dic) {
+                        frn.CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
+                        if (dic2.ContainsKey(v.Key)) continue;
+                        dic2.Add(v.Key, v.Value);
+                    }
+
+                    Serializer.SerializeDictionary(profXml, dic2);
                     break;
-                case FS19:
-                    dic = Serializer.DeserializeDictionary(
-                        reg.Read(FS19RegKeys.FS19_XML) + SF_COMP_S);
-                    dic.TryGetValue(mod, out fnd);
-                    DeleteFiles.DeleteFilesOrFolders(fnd + @"\" + mod);
+                case "FS19":
+                    prof = reg.Read(FS19RegKeys.FS19_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
+                    profXml = prof + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml";
+                    foreach (var v in dic) {
+                        frn.CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
+                        if (dic.ContainsKey(v.Key)) continue;
+                        dic2.Add(v.Key, v.Value);
+                    }
+
+                    Serializer.SerializeDictionary(profXml, dic2);
                     break;
             }
 
-            lc.CreateSortedLists();
-            lc.SortedFileListComplete();
+            frn.SetLoadProfile();
         }
     }
 }

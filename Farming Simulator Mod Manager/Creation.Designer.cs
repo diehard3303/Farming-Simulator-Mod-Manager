@@ -1,4 +1,7 @@
-﻿namespace Farming_Simulator_Mod_Manager {
+﻿/// <summary>
+/// 
+/// </summary>
+namespace Farming_Simulator_Mod_Manager {
     partial class Creation {
         /// <summary>
         /// Required designer variable.
@@ -91,7 +94,13 @@
 
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Button button1;
+        /// <summary>
+        /// The rb create profile
+        /// </summary>
         public System.Windows.Forms.RadioButton rbCreateProfile;
+        /// <summary>
+        /// The rb create group
+        /// </summary>
         public System.Windows.Forms.RadioButton rbCreateGroup;
     }
 }

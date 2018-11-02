@@ -31,8 +31,9 @@
             this.lstGroups = new System.Windows.Forms.ListBox();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.moveHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button1 = new System.Windows.Forms.Button();
             this.createFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button1 = new System.Windows.Forms.Button();
+            this.addModHashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
@@ -52,14 +53,15 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copyModToolStripMenuItem});
+            this.copyModToolStripMenuItem,
+            this.addModHashToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(131, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
             // 
             // copyModToolStripMenuItem
             // 
             this.copyModToolStripMenuItem.Name = "copyModToolStripMenuItem";
-            this.copyModToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.copyModToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.copyModToolStripMenuItem.Text = "Copy Mod";
             this.copyModToolStripMenuItem.Click += new System.EventHandler(this.copyModToolStripMenuItem_Click);
             // 
@@ -80,14 +82,21 @@
             this.moveHereToolStripMenuItem,
             this.createFolderToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(145, 48);
             // 
             // moveHereToolStripMenuItem
             // 
             this.moveHereToolStripMenuItem.Name = "moveHereToolStripMenuItem";
-            this.moveHereToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.moveHereToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.moveHereToolStripMenuItem.Text = "Move Here";
             this.moveHereToolStripMenuItem.Click += new System.EventHandler(this.moveHereToolStripMenuItem_Click);
+            // 
+            // createFolderToolStripMenuItem
+            // 
+            this.createFolderToolStripMenuItem.Name = "createFolderToolStripMenuItem";
+            this.createFolderToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.createFolderToolStripMenuItem.Text = "Create Folder";
+            this.createFolderToolStripMenuItem.Click += new System.EventHandler(this.createFolderToolStripMenuItem_Click);
             // 
             // button1
             // 
@@ -99,12 +108,12 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // createFolderToolStripMenuItem
+            // addModHashToolStripMenuItem
             // 
-            this.createFolderToolStripMenuItem.Name = "createFolderToolStripMenuItem";
-            this.createFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.createFolderToolStripMenuItem.Text = "Create Folder";
-            this.createFolderToolStripMenuItem.Click += new System.EventHandler(this.createFolderToolStripMenuItem_Click);
+            this.addModHashToolStripMenuItem.Name = "addModHashToolStripMenuItem";
+            this.addModHashToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addModHashToolStripMenuItem.Text = "Add Mod / Hash";
+            this.addModHashToolStripMenuItem.Click += new System.EventHandler(this.addModHashToolStripMenuItem_Click);
             // 
             // Mover
             // 
@@ -137,5 +146,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.ToolStripMenuItem moveHereToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createFolderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addModHashToolStripMenuItem;
     }
 }

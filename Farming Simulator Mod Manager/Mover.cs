@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Extensions;
 
@@ -185,6 +186,56 @@ namespace Farming_Simulator_Mod_Manager {
             Vars.FolderName = grpPth;
             var fld = new FolderBox();
             fld.ShowDialog();
+        }
+
+        private void addModHashToolStripMenuItem_Click(object sender, EventArgs e) {
+            var reg = new RegWork(true);
+            var nMod = lstRepo.SelectedItem.ToString();
+            var gi = new GameInfo();
+            var gam = gi.GetGame();
+            Dictionary<string, string> dic;
+            string tmp;
+
+            switch (gam) {
+                case "FS11":
+                    dic = Serializer.DeserializeDictionary(reg.Read(Fs11RegKeys.FS11_XML) + "hash.xml");
+                    tmp = reg.Read(Fs11RegKeys.FS11_REPO) + nMod;
+                    if (dic.ContainsKey(nMod)) return;
+                    dic.Add(nMod, Hasher.HashFile(tmp));
+                    Serializer.SerializeDictionary(reg.Read(Fs11RegKeys.FS11_XML) + "hash.xml", dic);
+                    break;
+                case "FS13":
+                    dic = Serializer.DeserializeDictionary(reg.Read(Fs13RegKeys.FS13_XML) + "hash.xml");
+                    tmp = reg.Read(Fs13RegKeys.FS13_REPO) + nMod;
+                    if (dic.ContainsKey(nMod)) return;
+                    dic.Add(nMod, Hasher.HashFile(tmp));
+                    Serializer.SerializeDictionary(reg.Read(Fs13RegKeys.FS13_XML) + "hash.xml", dic);
+                    break;
+                case "FS15":
+                    dic = Serializer.DeserializeDictionary(reg.Read(Fs15RegKeys.FS15_XML) + "hash.xml");
+                    tmp = reg.Read(Fs15RegKeys.FS15_REPO) + nMod;
+                    if (dic.ContainsKey(nMod)) return;
+                    dic.Add(nMod, Hasher.HashFile(tmp));
+                    Serializer.SerializeDictionary(reg.Read(Fs15RegKeys.FS15_XML) + "hash.xml", dic);
+                    break;
+                case "FS17":
+                    dic = Serializer.DeserializeDictionary(reg.Read(Fs17RegKeys.FS17_XML) + "hash.xml");
+                    tmp = reg.Read(Fs17RegKeys.FS17_REPO) + nMod;
+                    if (dic.ContainsKey(nMod)) return;
+                    dic.Add(nMod, Hasher.HashFile(tmp));
+                    Serializer.SerializeDictionary(reg.Read(Fs17RegKeys.FS17_XML) + "hash.xml", dic);
+                    break;
+                case "FS19":
+                    dic = Serializer.DeserializeDictionary(reg.Read(FS19RegKeys.FS19_XML) + "hash.xml");
+                    tmp = reg.Read(FS19RegKeys.FS19_REPO) + nMod;
+                    if (dic.ContainsKey(nMod)) return;
+                    dic.Add(nMod, Hasher.HashFile(tmp));
+                    Serializer.SerializeDictionary(reg.Read(FS19RegKeys.FS19_XML) + "hash.xml", dic);
+                    break;
+
+            }
+
+            MsgBx.Msg("Hash Computed and Added to XML", "Hasher");
         }
     }
 }
