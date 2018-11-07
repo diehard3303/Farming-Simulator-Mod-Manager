@@ -131,7 +131,6 @@ namespace Farming_Simulator_Mod_Manager {
 
                     lst = GetFilesFolders.GetFiles(reg.Read(Fs17RegKeys.FS17_GROUPS) + Vars.FolderName + @"\",
                         SEARCH_PATTERN);
-
                     break;
 
                 case FS19:
@@ -145,7 +144,6 @@ namespace Farming_Simulator_Mod_Manager {
 
                     lst = GetFilesFolders.GetFiles(reg.Read(FS19RegKeys.FS19_GROUPS) + Vars.FolderName + @"\",
                         SEARCH_PATTERN);
-
                     break;
             }
 
@@ -392,6 +390,13 @@ namespace Farming_Simulator_Mod_Manager {
             var gam = reg.Read(RegKeys.CURRENT_GAME);
             var prof = reg.Read(RegKeys.CURRENT_PROFILE);
             var dic = new Dictionary<string, string>();
+            var dic2 = Utils.GetFileListing();
+
+            var hash = Utils.GetHashListing();
+            if (hash.ContainsKey(mod.GetFileName())) {
+                hash.Remove(mod.GetFileName());
+            }
+
             IEnumerable<string> lst;
             var ls = new ListCreator();
             if (prof.IsNullOrEmpty()) return mod;
@@ -401,14 +406,11 @@ namespace Farming_Simulator_Mod_Manager {
                     DeleteFiles.DeleteFilesOrFolders(reg.Read(Fs11RegKeys.FS11_PROFILES) + @"\" + prof + @"\" +
                                                      mod.GetFileName());
                     lst = GetFilesFolders.GetFiles(reg.Read(Fs11RegKeys.FS11_PROFILES) + @"\" + prof + @"\", "*.zip");
-                    var dic2 = Serializer.DeserializeDictionary(
-                        reg.Read(Fs11RegKeys.FS11_XML) + SF_COMP_S);
                     foreach (var v in lst) {
                         dic2.TryGetValue(v.GetFileName(), out var fnd);
                         if (dic.ContainsKey(v.GetFileName())) continue;
                         dic.Add(v.GetFileName(), fnd);
                     }
-
                     Serializer.SerializeDictionary(
                         reg.Read(Fs11RegKeys.FS11_PROFILES) + @"\" + prof + @"\" + prof + ".xml",
                         dic);
@@ -417,15 +419,12 @@ namespace Farming_Simulator_Mod_Manager {
                     DeleteFiles.DeleteFilesOrFolders(reg.Read(Fs13RegKeys.FS13_PROFILES) + @"\" + prof + @"\" +
                                                      mod.GetFileName());
                     lst = GetFilesFolders.GetFiles(reg.Read(Fs13RegKeys.FS13_PROFILES) + @"\" + prof + @"\", "*.zip");
-                    dic2 = Serializer.DeserializeDictionary(
-                        reg.Read(Fs13RegKeys.FS13_XML) + SF_COMP_S);
-                    foreach (var v in lst) {
+                   foreach (var v in lst) {
                         dic2.TryGetValue(v.GetFileName(), out var fnd);
                         if (dic.ContainsKey(v.GetFileName())) continue;
                         dic.Add(v.GetFileName(), fnd);
                     }
-
-                    Serializer.SerializeDictionary(
+                   Serializer.SerializeDictionary(
                         reg.Read(Fs13RegKeys.FS13_PROFILES) + @"\" + prof + @"\" + prof + ".xml",
                         dic);
                     break;
@@ -433,15 +432,12 @@ namespace Farming_Simulator_Mod_Manager {
                     DeleteFiles.DeleteFilesOrFolders(reg.Read(Fs15RegKeys.FS15_PROFILES) + @"\" + prof + @"\" +
                                                      mod.GetFileName());
                     lst = GetFilesFolders.GetFiles(reg.Read(Fs15RegKeys.FS15_PROFILES) + @"\" + prof + @"\", "*.zip");
-                    dic2 = Serializer.DeserializeDictionary(
-                        reg.Read(Fs15RegKeys.FS15_XML) + SF_COMP_S);
-                    foreach (var v in lst) {
+                   foreach (var v in lst) {
                         dic2.TryGetValue(v.GetFileName(), out var fnd);
                         if (dic.ContainsKey(v.GetFileName())) continue;
                         dic.Add(v.GetFileName(), fnd);
                     }
-
-                    Serializer.SerializeDictionary(
+                   Serializer.SerializeDictionary(
                         reg.Read(Fs15RegKeys.FS15_PROFILES) + @"\" + prof + @"\" + prof + ".xml",
                         dic);
                     break;
@@ -449,14 +445,11 @@ namespace Farming_Simulator_Mod_Manager {
                     DeleteFiles.DeleteFilesOrFolders(reg.Read(Fs17RegKeys.FS17_PROFILES) + @"\" + prof + @"\" +
                                                      mod.GetFileName());
                     lst = GetFilesFolders.GetFiles(reg.Read(Fs17RegKeys.FS17_PROFILES) + @"\" + prof + @"\", "*.zip");
-                    dic2 = Serializer.DeserializeDictionary(
-                        reg.Read(Fs17RegKeys.FS17_XML) + SF_COMP_S);
                     foreach (var v in lst) {
                         dic2.TryGetValue(v.GetFileName(), out var fnd);
                         if (dic.ContainsKey(v.GetFileName())) continue;
                         dic.Add(v.GetFileName(), fnd);
                     }
-
                     Serializer.SerializeDictionary(
                         reg.Read(Fs17RegKeys.FS17_PROFILES) + @"\" + prof + @"\" + prof + ".xml",
                         dic);
@@ -465,14 +458,11 @@ namespace Farming_Simulator_Mod_Manager {
                     DeleteFiles.DeleteFilesOrFolders(reg.Read(FS19RegKeys.FS19_PROFILES) + @"\" + prof + @"\" +
                                                      mod.GetFileName());
                     lst = GetFilesFolders.GetFiles(reg.Read(FS19RegKeys.FS19_PROFILES) + @"\" + prof + @"\", "*.zip");
-                    dic2 = Serializer.DeserializeDictionary(
-                        reg.Read(FS19RegKeys.FS19_XML) + SF_COMP_S);
                     foreach (var v in lst) {
                         dic2.TryGetValue(v.GetFileName(), out var fnd);
                         if (dic.ContainsKey(v.GetFileName())) continue;
                         dic.Add(v.GetFileName(), fnd);
                     }
-
                     Serializer.SerializeDictionary(
                         reg.Read(FS19RegKeys.FS19_PROFILES) + @"\" + prof + @"\" + prof + ".xml",
                         dic);
@@ -492,22 +482,58 @@ namespace Farming_Simulator_Mod_Manager {
             var lc = new ListCreator();
             var reg = new RegWork(true);
             var gam = reg.Read(RegKeys.CURRENT_GAME);
+            var hash = Utils.GetHashListing();
 
             switch (gam) {
                 case FS11:
-                    DeleteFiles.DeleteFilesOrFolders(reg.Read(Fs11RegKeys.FS11_GROUPS) + @"\" + grp);
+                    var fPth = reg.Read(Fs11RegKeys.FS11_GROUPS) + @"\" + grp;
+                    var lst = GetFilesFolders.GetFiles(fPth + @"\", "*.zip");
+                    foreach (var v in lst) {
+                        if (!hash.ContainsKey(v.GetFileName())) continue;
+                        hash.Remove(v.GetFileName());
+                    }
+                    Serializer.SerializeDictionary(reg.Read(Fs11RegKeys.FS11_XML) + "hash.xml", hash);
+                    DeleteFiles.DeleteFilesOrFolders(fPth);
                     break;
                 case FS13:
-                    DeleteFiles.DeleteFilesOrFolders(reg.Read(Fs13RegKeys.FS13_GROUPS) + @"\" + grp);
+                    fPth = reg.Read(Fs13RegKeys.FS13_GROUPS) + @"\" + grp;
+                    lst = GetFilesFolders.GetFiles(fPth + @"\", "*.zip");
+                    foreach (var v in lst) {
+                        if (!hash.ContainsKey(v.GetFileName())) continue;
+                        hash.Remove(v.GetFileName());
+                    }
+                    Serializer.SerializeDictionary(reg.Read(Fs13RegKeys.FS13_XML) + "hash.xml", hash);
+                    DeleteFiles.DeleteFilesOrFolders(fPth);
                     break;
                 case FS15:
-                    DeleteFiles.DeleteFilesOrFolders(reg.Read(Fs15RegKeys.FS15_GROUPS) + @"\" + grp);
+                    fPth = reg.Read(Fs15RegKeys.FS15_GROUPS) + @"\" + grp;
+                    lst = GetFilesFolders.GetFiles(fPth + @"\", "*.zip");
+                    foreach (var v in lst) {
+                        if (!hash.ContainsKey(v.GetFileName())) continue;
+                        hash.Remove(v.GetFileName());
+                    }
+                    Serializer.SerializeDictionary(reg.Read(Fs15RegKeys.FS15_XML) + "hash.xml", hash);
+                    DeleteFiles.DeleteFilesOrFolders(fPth);
                     break;
                 case FS17:
-                    DeleteFiles.DeleteFilesOrFolders(reg.Read(Fs17RegKeys.FS17_GROUPS) + @"\" + grp);
+                    fPth = reg.Read(Fs17RegKeys.FS17_GROUPS) + @"\" + grp;
+                    lst = GetFilesFolders.GetFiles(fPth + @"\", "*.zip");
+                    foreach (var v in lst) {
+                        if (!hash.ContainsKey(v.GetFileName())) continue;
+                        hash.Remove(v.GetFileName());
+                    }
+                    Serializer.SerializeDictionary(reg.Read(Fs17RegKeys.FS17_XML) + "hash.xml", hash);
+                    DeleteFiles.DeleteFilesOrFolders(fPth);
                     break;
                 case FS19:
-                    DeleteFiles.DeleteFilesOrFolders(reg.Read(FS19RegKeys.FS19_GROUPS) + @"\" + grp);
+                    fPth = reg.Read(FS19RegKeys.FS19_GROUPS) + @"\" + grp;
+                    lst = GetFilesFolders.GetFiles(fPth + @"\", "*.zip");
+                    foreach (var v in lst) {
+                        if (!hash.ContainsKey(v.GetFileName())) continue;
+                        hash.Remove(v.GetFileName());
+                    }
+                    Serializer.SerializeDictionary(reg.Read(FS19RegKeys.FS19_XML) + "hash.xml", hash);
+                    DeleteFiles.DeleteFilesOrFolders(fPth);
                     break;
             }
 

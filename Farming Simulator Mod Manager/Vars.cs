@@ -120,5 +120,13 @@ namespace Farming_Simulator_Mod_Manager {
         ///   <c>true</c> if [file copy]; otherwise, <c>false</c>.
         /// </value>
         public static bool FileCopy { get; set; }
+
+        /// <summary>
+        /// Gets or sets the uni list.
+        /// </summary>
+        /// <value>
+        /// The uni list.
+        /// </value>
+        public static List<string> UniList { get; set; }
     }
 }

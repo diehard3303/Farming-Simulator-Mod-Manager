@@ -39,6 +39,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 using Extensions;
 
@@ -48,20 +49,20 @@ namespace Farming_Simulator_Mod_Manager {
     /// </summary>
     /// <seealso cref="System.Windows.Forms.Form" />
     public partial class Specials : Form {
-       
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="lpFileName"></param>
-    /// <param name="lpExistingFileName"></param>
-    /// <param name="lpSecurityAttributes"></param>
-    /// <returns></returns>
-    [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
-    private static extern bool CreateHardLink(
-    string lpFileName,
-    string lpExistingFileName,
-    IntPtr lpSecurityAttributes
-    );
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lpFileName"></param>
+        /// <param name="lpExistingFileName"></param>
+        /// <param name="lpSecurityAttributes"></param>
+        /// <returns></returns>
+        [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
+        private static extern bool CreateHardLink(
+            string lpFileName,
+            string lpExistingFileName,
+            IntPtr lpSecurityAttributes
+        );
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Specials"/> class.
         /// </summary>
@@ -95,6 +96,8 @@ namespace Farming_Simulator_Mod_Manager {
         }
 
         private Dictionary<string, string> _dic;
+        private Dictionary<string, string> _specials;
+        private string _fileName;
 
         private void Specials_Load(object sender, EventArgs e) {
             InitSpecials();
@@ -106,6 +109,7 @@ namespace Farming_Simulator_Mod_Manager {
             foreach (var v in _dic) {
                 lstSpecials.Items.Add(v.Key);
             }
+
             var gi = new GameInfo();
             var gam = gi.GetGame();
             IEnumerable<string> lst = null;
@@ -137,12 +141,16 @@ namespace Farming_Simulator_Mod_Manager {
                     lst = GetFilesFolders.GetFiles(pth, "*.xml");
                     break;
             }
+
             lstArchive.Items.Clear();
+            lstChange.Items.Clear();
             if (lst.IsNull()) return;
             foreach (var v in lst) {
                 lstArchive.Items.Add(v.GetFileName());
+                lstChange.Items.Add(v.GetFileName());
             }
-           
+
+            label3.Text = @"FileCount: " + lstChange.Items.Count;
         }
 
         private void removeModToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -196,6 +204,59 @@ namespace Farming_Simulator_Mod_Manager {
         }
 
         private void lstArchive_SelectedIndexChanged(object sender, EventArgs e) {
+            
+        }
+
+        private void button3_Click(object sender, EventArgs e) {
+            Dispose();
+        }
+
+        private void addFileToolStripMenuItem_Click(object sender, EventArgs e) {
+            var fullList = Utils.GetFileListing();
+            var ofd = new OpenFileDialog {Filter = @"zip files (*.zip)|*.zip", CheckFileExists = true};
+            ofd.ShowDialog();
+            var tmp = ofd.SafeFileName;
+            if (tmp.IsNullOrEmpty()) return;
+
+            fullList.TryGetValue(tmp ?? throw new InvalidOperationException(), out var fnd);
+            _specials.Add(tmp, fnd);
+            Utils.WriteSpecials(_specials, _fileName);
+            lstFiles.Items.Clear();
+            foreach (var special in _specials) {
+                lstFiles.Items.Add(special.Key);
+            }
+        }
+
+        private void deleteFileToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (lstFiles.SelectedItem.IsNull()) return;
+            var delFile = lstFiles.SelectedItem.ToString();
+            if (_specials.ContainsKey(delFile)) {
+                _specials.Remove(delFile);
+                Utils.WriteSpecials(_specials, _fileName);
+            }
+
+            lstFiles.Items.Clear();
+            foreach (var special in _specials) {
+                lstFiles.Items.Add(special.Key);
+            }
+        }
+
+        private void lstChange_SelectedIndexChanged(object sender, EventArgs e) {
+            if (lstChange.SelectedItem.IsNull()) return;
+            _fileName = lstChange.SelectedItem.ToString();
+            _specials = Utils.GetSpecials(_fileName);
+            lstFiles.Items.Clear();
+            foreach (var v in _specials) {
+                lstFiles.Items.Add(v.Key);
+            }
+
+            label5.Text = @"FileCount: " + lstFiles.Items.Count;
+        }
+
+        private void lstFiles_SelectedIndexChanged(object sender, EventArgs e) {
+        }
+
+        private void addSpecialsToCurrentProfileToolStripMenuItem_Click(object sender, EventArgs e) {
             if (lstArchive.SelectedItem.IsNull()) return;
             var spc = lstArchive.SelectedItem.ToString();
             var reg = new RegWork(true);
@@ -209,7 +270,7 @@ namespace Farming_Simulator_Mod_Manager {
             switch (gam) {
                 case "FS11":
                     dic = Serializer.DeserializeDictionary(reg.Read(Fs11RegKeys.FS11_BACKUP) + @"\Specials\" + spc);
-                   // dic2 = Serializer.DeserializeDictionary(Vars.SortedFileListCompletePath());
+                    // dic2 = Serializer.DeserializeDictionary(Vars.SortedFileListCompletePath());
                     profile = reg.Read(Fs11RegKeys.FS11_PROFILES) + pro + @"\";
                     break;
                 case "FS13":
@@ -239,10 +300,84 @@ namespace Farming_Simulator_Mod_Manager {
                 if (tmp.FileExists()) continue;
                 CreateHardLink(tmp, v.Value + @"\" + v.Key, IntPtr.Zero);
             }
+
             var lc = new ListCreator();
             lc.CreateSortedLists();
 
             MsgBx.Msg("Specials have been added to Profile", "Specials");
+        }
+
+        private void deleteSpecialsFromCurrentProfileToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (lstArchive.SelectedItem.IsNull()) return;
+            var spc = lstArchive.SelectedItem.ToString();
+            var reg = new RegWork(true);
+            var gi = new GameInfo();
+            var gam = gi.GetGame();
+            var dic = Utils.GetSpecials(spc);
+            var pro = reg.Read(RegKeys.CURRENT_PROFILE);
+            var profile = string.Empty;
+
+            switch (gam) {
+                case "FS11":
+                    profile = reg.Read(Fs11RegKeys.FS11_PROFILES) + pro + @"\";
+                    break;
+                case "FS13":
+                    profile = reg.Read(Fs13RegKeys.FS13_PROFILES) + pro + @"\";
+                    break;
+                case "FS15":
+                    profile = reg.Read(Fs15RegKeys.FS15_PROFILES) + pro + @"\";
+                    break;
+                case "FS17":
+                    profile = reg.Read(Fs17RegKeys.FS17_PROFILES) + pro + @"\";
+                    break;
+                case "FS19":
+                    profile = reg.Read(FS19RegKeys.FS19_PROFILES) + pro + @"\";
+                    break;
+            }
+            var profDic = profile + pro + ".xml";
+            var pDic = Serializer.DeserializeDictionary(profDic);
+            foreach (var v in dic) {
+                var tmp = profile + v.Key;
+                if (!tmp.FileExists()) continue;
+                DeleteFiles.DeleteFilesOrFolders(tmp, false);
+                pDic.Remove(v.Key);
+            }
+            Serializer.SerializeDictionary(profDic, pDic);
+            var lc = new ListCreator();
+            lc.CreateSortedLists();
+
+            MsgBx.Msg("Specials have been removed from Profile", "Specials");
+        }
+
+        private void deleteSpecialsFilexmlToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (lstArchive.SelectedItem.IsNull()) return;
+            var fi = lstArchive.SelectedItem.ToString();
+            var reg = new RegWork(true);
+            var gam = reg.Read(RegKeys.CURRENT_GAME);
+            string tmp = null;
+
+            switch (gam) {
+                case "FS11":
+                    tmp  = reg.Read(Fs11RegKeys.FS11_BACKUP) + @"Specials\" + fi;
+                    break;
+                case "FS13":
+                    tmp = reg.Read(Fs13RegKeys.FS13_BACKUP) + @"Specials\" + fi;
+                    break;
+                case "FS15":
+                    tmp = reg.Read(Fs15RegKeys.FS15_BACKUP) + @"Specials\" + fi;
+                    break;
+                case "FS17":
+                    tmp = reg.Read(Fs17RegKeys.FS17_BACKUP) + @"Specials\" + fi;
+                    break;
+                case "FS19":
+                    tmp = reg.Read(FS19RegKeys.FS19_BACKUP) + @"Specials\" + fi;
+                    break;
+            }
+
+            if (tmp.FileExists()) {
+                DeleteFiles.DeleteFilesOrFolders(tmp);
+                InitSpecials();
+            }
         }
     }
 }

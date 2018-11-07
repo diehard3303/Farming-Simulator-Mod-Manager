@@ -129,6 +129,13 @@
       <Compile Include="ReadLogFile.cs"/>
       <Compile Include="RegKeys.cs"/>
       <Compile Include="RegWork.cs"/>
+      <Compile Include="Results.cs">
+          <SubType>Form</SubType>
+      </Compile>
+      <Compile Include="Results.Designer.cs">
+          <DependentUpon>Results.cs</DependentUpon>
+      </Compile>
+      <Compile Include="Search.cs"/>
       <Compile Include="Serializer.cs"/>
       <Compile Include="Specials.cs">
           <SubType>Form</SubType>
@@ -165,6 +172,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+      <EmbeddedResource Include="Results.resx">
+          <DependentUpon>Results.cs</DependentUpon>
+      </EmbeddedResource>
       <EmbeddedResource Include="Specials.resx">
           <DependentUpon>Specials.cs</DependentUpon>
       </EmbeddedResource>

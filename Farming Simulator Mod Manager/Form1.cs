@@ -32,6 +32,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Extensions;
+using static Microsoft.VisualBasic.Interaction;
 
 namespace Farming_Simulator_Mod_Manager {
     /// <summary>
@@ -69,7 +70,10 @@ namespace Farming_Simulator_Mod_Manager {
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.I1)]
         private static extern bool CreateSymbolicLink(
-            string lpSymlinkFileName, string lpTargetFileName, SymbolicLink dwFlags);
+            string lpSymlinkFileName,
+            string lpTargetFileName,
+            SymbolicLink dwFlags
+        );
 
         private void btnExit_Click(object sender, EventArgs e) {
             Application.Exit();
@@ -227,10 +231,19 @@ namespace Farming_Simulator_Mod_Manager {
 
 
         private void Form1_Load(object sender, EventArgs e) {
+            InitRb();
+        }
+
+        private void InitRb() {
             radioButton10.Checked = true;
             Vars.HardLink = true;
             Vars.SoftLink = false;
             Vars.FileCopy = false;
+            rbFarmSim11.Checked = false;
+            rbFarmSim13.Checked = false;
+            rbFarmSim15.Checked = false;
+            rbFarmSim17.Checked = false;
+            rbFarmSim19.Checked = false;
         }
 
         /// <summary>
@@ -314,6 +327,7 @@ namespace Farming_Simulator_Mod_Manager {
             radioButton6.Checked = false;
             radioButton7.Checked = false;
             radioButton8.Checked = false;
+            
         }
 
         private void button1_Click(object sender, EventArgs e) {
@@ -434,14 +448,15 @@ namespace Farming_Simulator_Mod_Manager {
             var nProf = lstGroups.SelectedItem.ToString();
             var gi = new GameInfo();
             var gam = gi.GetGame();
-            Dictionary<string, string> dic;
+            var dic = Utils.GetGroupFileListing(nProf);
+            ;
             var reg = new RegWork(true);
 
             switch (gam) {
                 case "FS11":
                     var proLoc = reg.Read(Fs11RegKeys.FS11_PROFILES) + nProf;
                     Directory.CreateDirectory(proLoc);
-                   dic = Utils.GetGroupFileListing(nProf);
+
                     foreach (var v in dic) {
                         var tmp = proLoc + @"\" + v.Key;
                         var orig = v.Value + @"\" + v.Key;
@@ -449,12 +464,13 @@ namespace Farming_Simulator_Mod_Manager {
                         //CreateHardLink(tmp, orig, IntPtr.Zero);
                         CreateLink(tmp, orig);
                     }
+
                     Serializer.SerializeDictionary(proLoc + @"\" + nProf + ".xml", dic);
                     break;
                 case "FS13":
                     proLoc = reg.Read(Fs13RegKeys.FS13_PROFILES) + nProf;
                     Directory.CreateDirectory(proLoc);
-                    dic = Utils.GetGroupFileListing(nProf);
+
                     foreach (var v in dic) {
                         var tmp = proLoc + @"\" + v.Key;
                         var orig = v.Value + @"\" + v.Key;
@@ -468,7 +484,7 @@ namespace Farming_Simulator_Mod_Manager {
                 case "FS15":
                     proLoc = reg.Read(Fs15RegKeys.FS15_PROFILES) + nProf;
                     Directory.CreateDirectory(proLoc);
-                    dic = Utils.GetGroupFileListing(nProf);
+
                     foreach (var v in dic) {
                         var tmp = proLoc + @"\" + v.Key;
                         var orig = v.Value + @"\" + v.Key;
@@ -482,7 +498,7 @@ namespace Farming_Simulator_Mod_Manager {
                 case "FS17":
                     proLoc = reg.Read(Fs17RegKeys.FS17_PROFILES) + nProf;
                     Directory.CreateDirectory(proLoc);
-                    dic = Utils.GetGroupFileListing(nProf);
+
                     foreach (var v in dic) {
                         var tmp = proLoc + @"\" + v.Key;
                         var orig = v.Value + @"\" + v.Key;
@@ -496,7 +512,7 @@ namespace Farming_Simulator_Mod_Manager {
                 case "FS19":
                     proLoc = reg.Read(FS19RegKeys.FS19_PROFILES) + nProf;
                     Directory.CreateDirectory(proLoc);
-                    dic = Utils.GetGroupFileListing(nProf);
+
                     foreach (var v in dic) {
                         var tmp = proLoc + @"\" + v.Key;
                         var orig = v.Value + @"\" + v.Key;
@@ -634,6 +650,46 @@ namespace Farming_Simulator_Mod_Manager {
         private enum SymbolicLink {
             File = 0,
             Directory = 1
+        }
+
+        private void searchGroupsToolStripMenuItem1_Click(object sender, EventArgs e) {
+            var input = InputBox("Type Search Pattern Here", "Search Groups", "Default", -1, -1);
+            if (input.IsNullOrEmpty()) return;
+            var lst = Search.SearchMods(input);
+            var res = new Results();
+            res.ShowDialog();
+        }
+
+        private void addGroupToNoSearchGroupToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (lstGroups.SelectedItem.IsNull()) return;
+            var tmp = lstGroups.SelectedItem.ToString();
+            var dic = Utils.GetByPassList();
+            var reg = new RegWork(true);
+            var gi = new GameInfo();
+            var gam = gi.GetGame();
+            string grp = null;
+
+            switch (gam) {
+                case "FS11":
+                    grp = reg.Read(Fs11RegKeys.FS11_GROUPS);
+                    break;
+                case "FS13":
+                    grp = reg.Read(Fs13RegKeys.FS13_GROUPS);
+                    break;
+                case "FS15":
+                    grp = reg.Read(Fs15RegKeys.FS15_GROUPS);
+                    break;
+                case "FS17":
+                    grp = reg.Read(Fs17RegKeys.FS17_GROUPS);
+                    break;
+                case "FS19":
+                    grp = reg.Read(FS19RegKeys.FS19_GROUPS);
+                    break;
+            }
+
+            if (dic.ContainsKey(tmp)) return;
+            dic.Add(tmp, grp);
+            Utils.WriteByPassList(dic);
         }
     }
 }

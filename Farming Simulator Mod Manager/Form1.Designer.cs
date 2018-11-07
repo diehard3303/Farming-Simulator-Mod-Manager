@@ -86,7 +86,9 @@
             this.repoWorkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveModToRepoToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.addModToProfileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.createProfileFromFileMapToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
+            this.startFarmSimulatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.lblGroupCount = new System.Windows.Forms.Label();
             this.lblGroupModsCount = new System.Windows.Forms.Label();
@@ -107,8 +109,10 @@
             this.radioButton11 = new System.Windows.Forms.RadioButton();
             this.radioButton10 = new System.Windows.Forms.RadioButton();
             this.radioButton9 = new System.Windows.Forms.RadioButton();
-            this.createProfileFromFileMapToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.startFarmSimulatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.searchGroupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.searchGroupsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.addGroupToNoSearchGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
@@ -126,7 +130,7 @@
             this.groupBox1.Controls.Add(this.rbFarmSim15);
             this.groupBox1.Controls.Add(this.rbFarmSim13);
             this.groupBox1.Controls.Add(this.rbFarmSim11);
-            this.groupBox1.Location = new System.Drawing.Point(297, 593);
+            this.groupBox1.Location = new System.Drawing.Point(297, 471);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 5, 3, 5);
@@ -206,7 +210,7 @@
             this.lstProfiles.ItemHeight = 22;
             this.lstProfiles.Location = new System.Drawing.Point(13, 28);
             this.lstProfiles.Name = "lstProfiles";
-            this.lstProfiles.Size = new System.Drawing.Size(219, 510);
+            this.lstProfiles.Size = new System.Drawing.Size(219, 400);
             this.lstProfiles.TabIndex = 1;
             this.lstProfiles.SelectedIndexChanged += new System.EventHandler(this.lstProfiles_SelectedIndexChanged);
             // 
@@ -350,7 +354,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(1036, 645);
+            this.btnExit.Location = new System.Drawing.Point(1036, 521);
             this.btnExit.Name = "btnExit";
             this.btnExit.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.btnExit.Size = new System.Drawing.Size(90, 34);
@@ -368,7 +372,7 @@
             this.lstProfileMods.ItemHeight = 22;
             this.lstProfileMods.Location = new System.Drawing.Point(238, 28);
             this.lstProfileMods.Name = "lstProfileMods";
-            this.lstProfileMods.Size = new System.Drawing.Size(284, 510);
+            this.lstProfileMods.Size = new System.Drawing.Size(284, 400);
             this.lstProfileMods.TabIndex = 3;
             // 
             // contextMenuStrip2
@@ -438,7 +442,7 @@
             this.lstGroups.ItemHeight = 22;
             this.lstGroups.Location = new System.Drawing.Point(536, 28);
             this.lstGroups.Name = "lstGroups";
-            this.lstGroups.Size = new System.Drawing.Size(220, 510);
+            this.lstGroups.Size = new System.Drawing.Size(220, 400);
             this.lstGroups.TabIndex = 8;
             this.lstGroups.SelectedIndexChanged += new System.EventHandler(this.lstGroups_SelectedIndexChanged);
             // 
@@ -455,9 +459,11 @@
             this.loadFolderIntoProfileToolStripMenuItem,
             this.toolStripSeparator16,
             this.startFarmSimulatorToolStripMenuItem3,
-            this.toolStripSeparator22});
+            this.toolStripSeparator22,
+            this.searchGroupsToolStripMenuItem,
+            this.toolStripSeparator9});
             this.contextMenuStrip3.Name = "contextMenuStrip3";
-            this.contextMenuStrip3.Size = new System.Drawing.Size(240, 150);
+            this.contextMenuStrip3.Size = new System.Drawing.Size(240, 178);
             // 
             // toolStripSeparator4
             // 
@@ -475,7 +481,7 @@
             // deleteGroupToolStripMenuItem1
             // 
             this.deleteGroupToolStripMenuItem1.Name = "deleteGroupToolStripMenuItem1";
-            this.deleteGroupToolStripMenuItem1.Size = new System.Drawing.Size(143, 22);
+            this.deleteGroupToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.deleteGroupToolStripMenuItem1.Text = "Delete Group";
             this.deleteGroupToolStripMenuItem1.Click += new System.EventHandler(this.deleteGroupToolStripMenuItem1_Click);
             // 
@@ -565,7 +571,7 @@
             this.lstGroupMods.ItemHeight = 22;
             this.lstGroupMods.Location = new System.Drawing.Point(762, 28);
             this.lstGroupMods.Name = "lstGroupMods";
-            this.lstGroupMods.Size = new System.Drawing.Size(367, 510);
+            this.lstGroupMods.Size = new System.Drawing.Size(367, 400);
             this.lstGroupMods.TabIndex = 9;
             // 
             // contextMenuStrip4
@@ -576,7 +582,7 @@
             this.startFarmSimulatorToolStripMenuItem,
             this.toolStripSeparator11});
             this.contextMenuStrip4.Name = "contextMenuStrip4";
-            this.contextMenuStrip4.Size = new System.Drawing.Size(183, 82);
+            this.contextMenuStrip4.Size = new System.Drawing.Size(183, 60);
             // 
             // eleteModToolStripMenuItem
             // 
@@ -627,10 +633,24 @@
             this.addModToProfileToolStripMenuItem1.Text = "Add Mod to Profile";
             this.addModToProfileToolStripMenuItem1.Click += new System.EventHandler(this.addModToProfileToolStripMenuItem1_Click);
             // 
+            // createProfileFromFileMapToolStripMenuItem1
+            // 
+            this.createProfileFromFileMapToolStripMenuItem1.Name = "createProfileFromFileMapToolStripMenuItem1";
+            this.createProfileFromFileMapToolStripMenuItem1.Size = new System.Drawing.Size(230, 22);
+            this.createProfileFromFileMapToolStripMenuItem1.Text = "Create Profile from File (Map)";
+            this.createProfileFromFileMapToolStripMenuItem1.Click += new System.EventHandler(this.createProfileFromFileMapToolStripMenuItem1_Click);
+            // 
             // toolStripSeparator19
             // 
             this.toolStripSeparator19.Name = "toolStripSeparator19";
             this.toolStripSeparator19.Size = new System.Drawing.Size(179, 6);
+            // 
+            // startFarmSimulatorToolStripMenuItem
+            // 
+            this.startFarmSimulatorToolStripMenuItem.Name = "startFarmSimulatorToolStripMenuItem";
+            this.startFarmSimulatorToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.startFarmSimulatorToolStripMenuItem.Text = "Start Farm Simulator";
+            this.startFarmSimulatorToolStripMenuItem.Click += new System.EventHandler(this.startFarmSimulatorToolStripMenuItem_Click);
             // 
             // toolStripSeparator11
             // 
@@ -661,7 +681,7 @@
             this.groupBox2.Controls.Add(this.radioButton3);
             this.groupBox2.Controls.Add(this.radioButton2);
             this.groupBox2.Controls.Add(this.radioButton1);
-            this.groupBox2.Location = new System.Drawing.Point(160, 563);
+            this.groupBox2.Location = new System.Drawing.Point(160, 434);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(107, 121);
             this.groupBox2.TabIndex = 14;
@@ -720,7 +740,7 @@
             // 
             this.lblGame.AutoSize = true;
             this.lblGame.Font = new System.Drawing.Font("Dubai", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGame.Location = new System.Drawing.Point(641, 560);
+            this.lblGame.Location = new System.Drawing.Point(691, 434);
             this.lblGame.Name = "lblGame";
             this.lblGame.Size = new System.Drawing.Size(64, 32);
             this.lblGame.TabIndex = 15;
@@ -730,7 +750,7 @@
             // 
             this.lblProf.AutoSize = true;
             this.lblProf.Font = new System.Drawing.Font("Dubai", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProf.Location = new System.Drawing.Point(345, 560);
+            this.lblProf.Location = new System.Drawing.Point(303, 434);
             this.lblProf.Name = "lblProf";
             this.lblProf.Size = new System.Drawing.Size(70, 32);
             this.lblProf.TabIndex = 16;
@@ -738,7 +758,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1036, 574);
+            this.button1.Location = new System.Drawing.Point(1036, 445);
             this.button1.Name = "button1";
             this.button1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.button1.Size = new System.Drawing.Size(90, 58);
@@ -753,7 +773,7 @@
             this.groupBox3.Controls.Add(this.radioButton6);
             this.groupBox3.Controls.Add(this.radioButton7);
             this.groupBox3.Controls.Add(this.radioButton8);
-            this.groupBox3.Location = new System.Drawing.Point(899, 563);
+            this.groupBox3.Location = new System.Drawing.Point(899, 434);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(107, 121);
             this.groupBox3.TabIndex = 18;
@@ -813,7 +833,7 @@
             this.groupBox4.Controls.Add(this.radioButton11);
             this.groupBox4.Controls.Add(this.radioButton10);
             this.groupBox4.Controls.Add(this.radioButton9);
-            this.groupBox4.Location = new System.Drawing.Point(13, 563);
+            this.groupBox4.Location = new System.Drawing.Point(13, 434);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(117, 121);
             this.groupBox4.TabIndex = 20;
@@ -856,25 +876,39 @@
             this.radioButton9.UseVisualStyleBackColor = true;
             this.radioButton9.CheckedChanged += new System.EventHandler(this.radioButton9_CheckedChanged);
             // 
-            // createProfileFromFileMapToolStripMenuItem1
+            // searchGroupsToolStripMenuItem
             // 
-            this.createProfileFromFileMapToolStripMenuItem1.Name = "createProfileFromFileMapToolStripMenuItem1";
-            this.createProfileFromFileMapToolStripMenuItem1.Size = new System.Drawing.Size(230, 22);
-            this.createProfileFromFileMapToolStripMenuItem1.Text = "Create Profile from File (Map)";
-            this.createProfileFromFileMapToolStripMenuItem1.Click += new System.EventHandler(this.createProfileFromFileMapToolStripMenuItem1_Click);
+            this.searchGroupsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.searchGroupsToolStripMenuItem1,
+            this.addGroupToNoSearchGroupToolStripMenuItem});
+            this.searchGroupsToolStripMenuItem.Name = "searchGroupsToolStripMenuItem";
+            this.searchGroupsToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.searchGroupsToolStripMenuItem.Text = "Search Groups";
             // 
-            // startFarmSimulatorToolStripMenuItem
+            // searchGroupsToolStripMenuItem1
             // 
-            this.startFarmSimulatorToolStripMenuItem.Name = "startFarmSimulatorToolStripMenuItem";
-            this.startFarmSimulatorToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
-            this.startFarmSimulatorToolStripMenuItem.Text = "Start Farm Simulator";
-            this.startFarmSimulatorToolStripMenuItem.Click += new System.EventHandler(this.startFarmSimulatorToolStripMenuItem_Click);
+            this.searchGroupsToolStripMenuItem1.Name = "searchGroupsToolStripMenuItem1";
+            this.searchGroupsToolStripMenuItem1.Size = new System.Drawing.Size(241, 22);
+            this.searchGroupsToolStripMenuItem1.Text = "Search Groups";
+            this.searchGroupsToolStripMenuItem1.Click += new System.EventHandler(this.searchGroupsToolStripMenuItem1_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(236, 6);
+            // 
+            // addGroupToNoSearchGroupToolStripMenuItem
+            // 
+            this.addGroupToNoSearchGroupToolStripMenuItem.Name = "addGroupToNoSearchGroupToolStripMenuItem";
+            this.addGroupToNoSearchGroupToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.addGroupToNoSearchGroupToolStripMenuItem.Text = "Add Group to No-Search Group";
+            this.addGroupToNoSearchGroupToolStripMenuItem.Click += new System.EventHandler(this.addGroupToNoSearchGroupToolStripMenuItem_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1141, 700);
+            this.ClientSize = new System.Drawing.Size(1141, 576);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.button1);
@@ -1002,6 +1036,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
         private System.Windows.Forms.ToolStripMenuItem createProfileFromFileMapToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem startFarmSimulatorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem searchGroupsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem searchGroupsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.ToolStripMenuItem addGroupToNoSearchGroupToolStripMenuItem;
     }
 }
 

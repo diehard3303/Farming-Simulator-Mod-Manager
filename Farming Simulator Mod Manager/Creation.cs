@@ -152,5 +152,9 @@ namespace Farming_Simulator_Mod_Manager {
             var dic = new Dictionary<string, string>();
             Serializer.SerializeDictionary(tmp, dic);
         }
+
+        private void button2_Click(object sender, EventArgs e) {
+            Dispose();
+        }
     }
 }
