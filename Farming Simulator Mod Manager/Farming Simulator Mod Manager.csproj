@@ -105,6 +105,7 @@
       <Compile Include="Fs11RegKeys.cs"/>
       <Compile Include="FS13RegKeys.cs"/>
       <Compile Include="Fs15RegKeys.cs"/>
+      <Compile Include="Fs17.cs"/>
       <Compile Include="FS17RegKeys.cs"/>
       <Compile Include="FS19RegKeys.cs"/>
       <Compile Include="FSCheatMoney.cs"/>
@@ -143,7 +144,7 @@
       <Compile Include="Specials.Designer.cs">
           <DependentUpon>Specials.cs</DependentUpon>
       </Compile>
-      <Compile Include="SymLinks.cs"/>
+      <Compile Include="SymLinkCheck.cs"/>
       <Compile Include="UpdateSystem.cs"/>
       <Compile Include="Utils.cs"/>
       <Compile Include="Vars.cs"/>

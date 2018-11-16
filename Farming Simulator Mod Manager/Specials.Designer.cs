@@ -30,6 +30,13 @@
             this.button1 = new System.Windows.Forms.Button();
             this.txtFileName = new System.Windows.Forms.TextBox();
             this.lstArchive = new System.Windows.Forms.ListBox();
+            this.contextMenuStrip3 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addSpecialsToCurrentProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.deleteSpecialsFromCurrentProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.deleteSpecialsFilexmlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lstChange = new System.Windows.Forms.ListBox();
@@ -41,16 +48,11 @@
             this.lstFiles = new System.Windows.Forms.ListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.contextMenuStrip3 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.addSpecialsToCurrentProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.deleteSpecialsFromCurrentProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.deleteSpecialsFilexmlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.verifySpecialsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.contextMenuStrip1.SuspendLayout();
-            this.contextMenuStrip2.SuspendLayout();
             this.contextMenuStrip3.SuspendLayout();
+            this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // lstSpecials
@@ -103,7 +105,56 @@
             this.lstArchive.Name = "lstArchive";
             this.lstArchive.Size = new System.Drawing.Size(132, 277);
             this.lstArchive.TabIndex = 4;
-            this.lstArchive.SelectedIndexChanged += new System.EventHandler(this.lstArchive_SelectedIndexChanged);
+            // 
+            // contextMenuStrip3
+            // 
+            this.contextMenuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addSpecialsToCurrentProfileToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.deleteSpecialsFromCurrentProfileToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.deleteSpecialsFilexmlToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.verifySpecialsToolStripMenuItem,
+            this.toolStripSeparator4});
+            this.contextMenuStrip3.Name = "contextMenuStrip3";
+            this.contextMenuStrip3.Size = new System.Drawing.Size(262, 138);
+            // 
+            // addSpecialsToCurrentProfileToolStripMenuItem
+            // 
+            this.addSpecialsToCurrentProfileToolStripMenuItem.Name = "addSpecialsToCurrentProfileToolStripMenuItem";
+            this.addSpecialsToCurrentProfileToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
+            this.addSpecialsToCurrentProfileToolStripMenuItem.Text = "Add Specials to Current Profile";
+            this.addSpecialsToCurrentProfileToolStripMenuItem.Click += new System.EventHandler(this.addSpecialsToCurrentProfileToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(258, 6);
+            // 
+            // deleteSpecialsFromCurrentProfileToolStripMenuItem
+            // 
+            this.deleteSpecialsFromCurrentProfileToolStripMenuItem.Name = "deleteSpecialsFromCurrentProfileToolStripMenuItem";
+            this.deleteSpecialsFromCurrentProfileToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
+            this.deleteSpecialsFromCurrentProfileToolStripMenuItem.Text = "Delete Specials from Current Profile";
+            this.deleteSpecialsFromCurrentProfileToolStripMenuItem.Click += new System.EventHandler(this.deleteSpecialsFromCurrentProfileToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(258, 6);
+            // 
+            // deleteSpecialsFilexmlToolStripMenuItem
+            // 
+            this.deleteSpecialsFilexmlToolStripMenuItem.Name = "deleteSpecialsFilexmlToolStripMenuItem";
+            this.deleteSpecialsFilexmlToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
+            this.deleteSpecialsFilexmlToolStripMenuItem.Text = "Delete Specials File (xml)";
+            this.deleteSpecialsFilexmlToolStripMenuItem.Click += new System.EventHandler(this.deleteSpecialsFilexmlToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(258, 6);
             // 
             // label2
             // 
@@ -181,7 +232,6 @@
             this.lstFiles.Name = "lstFiles";
             this.lstFiles.Size = new System.Drawing.Size(283, 420);
             this.lstFiles.TabIndex = 14;
-            this.lstFiles.SelectedIndexChanged += new System.EventHandler(this.lstFiles_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -201,53 +251,17 @@
             this.label5.TabIndex = 16;
             this.label5.Text = "label5";
             // 
-            // contextMenuStrip3
+            // verifySpecialsToolStripMenuItem
             // 
-            this.contextMenuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addSpecialsToCurrentProfileToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.deleteSpecialsFromCurrentProfileToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.deleteSpecialsFilexmlToolStripMenuItem,
-            this.toolStripSeparator3});
-            this.contextMenuStrip3.Name = "contextMenuStrip3";
-            this.contextMenuStrip3.Size = new System.Drawing.Size(262, 110);
+            this.verifySpecialsToolStripMenuItem.Name = "verifySpecialsToolStripMenuItem";
+            this.verifySpecialsToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
+            this.verifySpecialsToolStripMenuItem.Text = "Verify Specials";
+            this.verifySpecialsToolStripMenuItem.Click += new System.EventHandler(this.verifySpecialsToolStripMenuItem_Click);
             // 
-            // addSpecialsToCurrentProfileToolStripMenuItem
+            // toolStripSeparator4
             // 
-            this.addSpecialsToCurrentProfileToolStripMenuItem.Name = "addSpecialsToCurrentProfileToolStripMenuItem";
-            this.addSpecialsToCurrentProfileToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
-            this.addSpecialsToCurrentProfileToolStripMenuItem.Text = "Add Specials to Current Profile";
-            this.addSpecialsToCurrentProfileToolStripMenuItem.Click += new System.EventHandler(this.addSpecialsToCurrentProfileToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(258, 6);
-            // 
-            // deleteSpecialsFromCurrentProfileToolStripMenuItem
-            // 
-            this.deleteSpecialsFromCurrentProfileToolStripMenuItem.Name = "deleteSpecialsFromCurrentProfileToolStripMenuItem";
-            this.deleteSpecialsFromCurrentProfileToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
-            this.deleteSpecialsFromCurrentProfileToolStripMenuItem.Text = "Delete Specials from Current Profile";
-            this.deleteSpecialsFromCurrentProfileToolStripMenuItem.Click += new System.EventHandler(this.deleteSpecialsFromCurrentProfileToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(258, 6);
-            // 
-            // deleteSpecialsFilexmlToolStripMenuItem
-            // 
-            this.deleteSpecialsFilexmlToolStripMenuItem.Name = "deleteSpecialsFilexmlToolStripMenuItem";
-            this.deleteSpecialsFilexmlToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
-            this.deleteSpecialsFilexmlToolStripMenuItem.Text = "Delete Specials File (xml)";
-            this.deleteSpecialsFilexmlToolStripMenuItem.Click += new System.EventHandler(this.deleteSpecialsFilexmlToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(258, 6);
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(258, 6);
             // 
             // Specials
             // 
@@ -274,8 +288,8 @@
             this.Text = "Specials";
             this.Load += new System.EventHandler(this.Specials_Load);
             this.contextMenuStrip1.ResumeLayout(false);
-            this.contextMenuStrip2.ResumeLayout(false);
             this.contextMenuStrip3.ResumeLayout(false);
+            this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -310,5 +324,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem deleteSpecialsFilexmlToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem verifySpecialsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }

@@ -78,6 +78,10 @@
             this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
             this.startFarmSimulatorToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator22 = new System.Windows.Forms.ToolStripSeparator();
+            this.searchGroupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.searchGroupsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.addGroupToNoSearchGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.lstGroupMods = new System.Windows.Forms.ListBox();
             this.contextMenuStrip4 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.eleteModToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -109,10 +113,9 @@
             this.radioButton11 = new System.Windows.Forms.RadioButton();
             this.radioButton10 = new System.Windows.Forms.RadioButton();
             this.radioButton9 = new System.Windows.Forms.RadioButton();
-            this.searchGroupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.searchGroupsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.addGroupToNoSearchGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteGroupFilesInProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.groupBox1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
@@ -463,7 +466,7 @@
             this.searchGroupsToolStripMenuItem,
             this.toolStripSeparator9});
             this.contextMenuStrip3.Name = "contextMenuStrip3";
-            this.contextMenuStrip3.Size = new System.Drawing.Size(240, 178);
+            this.contextMenuStrip3.Size = new System.Drawing.Size(240, 200);
             // 
             // toolStripSeparator4
             // 
@@ -473,7 +476,10 @@
             // deleteGroupToolStripMenuItem
             // 
             this.deleteGroupToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.deleteGroupToolStripMenuItem1});
+            this.deleteGroupToolStripMenuItem1,
+            this.toolStripSeparator10,
+            this.deleteGroupFilesInProfileToolStripMenuItem,
+            this.toolStripSeparator12});
             this.deleteGroupToolStripMenuItem.Name = "deleteGroupToolStripMenuItem";
             this.deleteGroupToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
             this.deleteGroupToolStripMenuItem.Text = "Delete Group";
@@ -481,7 +487,7 @@
             // deleteGroupToolStripMenuItem1
             // 
             this.deleteGroupToolStripMenuItem1.Name = "deleteGroupToolStripMenuItem1";
-            this.deleteGroupToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.deleteGroupToolStripMenuItem1.Size = new System.Drawing.Size(219, 22);
             this.deleteGroupToolStripMenuItem1.Text = "Delete Group";
             this.deleteGroupToolStripMenuItem1.Click += new System.EventHandler(this.deleteGroupToolStripMenuItem1_Click);
             // 
@@ -501,7 +507,7 @@
             // createNewGroupToolStripMenuItem
             // 
             this.createNewGroupToolStripMenuItem.Name = "createNewGroupToolStripMenuItem";
-            this.createNewGroupToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.createNewGroupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.createNewGroupToolStripMenuItem.Text = "Create New Group";
             this.createNewGroupToolStripMenuItem.Click += new System.EventHandler(this.createNewGroupToolStripMenuItem_Click);
             // 
@@ -561,6 +567,34 @@
             // 
             this.toolStripSeparator22.Name = "toolStripSeparator22";
             this.toolStripSeparator22.Size = new System.Drawing.Size(236, 6);
+            // 
+            // searchGroupsToolStripMenuItem
+            // 
+            this.searchGroupsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.searchGroupsToolStripMenuItem1,
+            this.addGroupToNoSearchGroupToolStripMenuItem});
+            this.searchGroupsToolStripMenuItem.Name = "searchGroupsToolStripMenuItem";
+            this.searchGroupsToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.searchGroupsToolStripMenuItem.Text = "Search Groups";
+            // 
+            // searchGroupsToolStripMenuItem1
+            // 
+            this.searchGroupsToolStripMenuItem1.Name = "searchGroupsToolStripMenuItem1";
+            this.searchGroupsToolStripMenuItem1.Size = new System.Drawing.Size(241, 22);
+            this.searchGroupsToolStripMenuItem1.Text = "Search Groups";
+            this.searchGroupsToolStripMenuItem1.Click += new System.EventHandler(this.searchGroupsToolStripMenuItem1_Click);
+            // 
+            // addGroupToNoSearchGroupToolStripMenuItem
+            // 
+            this.addGroupToNoSearchGroupToolStripMenuItem.Name = "addGroupToNoSearchGroupToolStripMenuItem";
+            this.addGroupToNoSearchGroupToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.addGroupToNoSearchGroupToolStripMenuItem.Text = "Add Group to No-Search Group";
+            this.addGroupToNoSearchGroupToolStripMenuItem.Click += new System.EventHandler(this.addGroupToNoSearchGroupToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(236, 6);
             // 
             // lstGroupMods
             // 
@@ -876,33 +910,22 @@
             this.radioButton9.UseVisualStyleBackColor = true;
             this.radioButton9.CheckedChanged += new System.EventHandler(this.radioButton9_CheckedChanged);
             // 
-            // searchGroupsToolStripMenuItem
+            // deleteGroupFilesInProfileToolStripMenuItem
             // 
-            this.searchGroupsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.searchGroupsToolStripMenuItem1,
-            this.addGroupToNoSearchGroupToolStripMenuItem});
-            this.searchGroupsToolStripMenuItem.Name = "searchGroupsToolStripMenuItem";
-            this.searchGroupsToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
-            this.searchGroupsToolStripMenuItem.Text = "Search Groups";
+            this.deleteGroupFilesInProfileToolStripMenuItem.Name = "deleteGroupFilesInProfileToolStripMenuItem";
+            this.deleteGroupFilesInProfileToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.deleteGroupFilesInProfileToolStripMenuItem.Text = "Delete Group Files in Profile";
+            this.deleteGroupFilesInProfileToolStripMenuItem.Click += new System.EventHandler(this.deleteGroupFilesInProfileToolStripMenuItem_Click);
             // 
-            // searchGroupsToolStripMenuItem1
+            // toolStripSeparator10
             // 
-            this.searchGroupsToolStripMenuItem1.Name = "searchGroupsToolStripMenuItem1";
-            this.searchGroupsToolStripMenuItem1.Size = new System.Drawing.Size(241, 22);
-            this.searchGroupsToolStripMenuItem1.Text = "Search Groups";
-            this.searchGroupsToolStripMenuItem1.Click += new System.EventHandler(this.searchGroupsToolStripMenuItem1_Click);
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(216, 6);
             // 
-            // toolStripSeparator9
+            // toolStripSeparator12
             // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(236, 6);
-            // 
-            // addGroupToNoSearchGroupToolStripMenuItem
-            // 
-            this.addGroupToNoSearchGroupToolStripMenuItem.Name = "addGroupToNoSearchGroupToolStripMenuItem";
-            this.addGroupToNoSearchGroupToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.addGroupToNoSearchGroupToolStripMenuItem.Text = "Add Group to No-Search Group";
-            this.addGroupToNoSearchGroupToolStripMenuItem.Click += new System.EventHandler(this.addGroupToNoSearchGroupToolStripMenuItem_Click);
+            this.toolStripSeparator12.Name = "toolStripSeparator12";
+            this.toolStripSeparator12.Size = new System.Drawing.Size(216, 6);
             // 
             // Form1
             // 
@@ -1040,6 +1063,9 @@
         private System.Windows.Forms.ToolStripMenuItem searchGroupsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripMenuItem addGroupToNoSearchGroupToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripMenuItem deleteGroupFilesInProfileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
     }
 }
 

@@ -28,6 +28,7 @@
 
 using System;
 using System.Collections.Generic;
+using Extensions;
 
 namespace Farming_Simulator_Mod_Manager {
     internal class Utils {
@@ -41,43 +42,164 @@ namespace Farming_Simulator_Mod_Manager {
         public static string AppPath => AppDomain.CurrentDomain.BaseDirectory;
 
         /// <summary>
-        /// Gets the file listing.
+        ///     Gets the file listing.
         /// </summary>
         /// <returns>dictionary</returns>
-        public static Dictionary<string, string> GetFileListing() {
-            Dictionary<string, string> dic = null;
-            var gi = new GameInfo();
-            var gam = gi.GetGame();
-            var reg = new RegWork(true);
+        public static Dictionary<string, string> CompleteSortedList {
+            get {
+                Dictionary<string, string> dic = null;
+                var gi = new GameInfo();
+                var gam = gi.GetGame();
+                var reg = new RegWork(true);
 
-            switch (gam) {
-                case "FS11":
-                    dic = Serializer.DeserializeDictionary(
-                        reg.Read(Fs11RegKeys.FS11_XML) + SFL_C_S);
-                    break;
-                case "FS13":
-                    dic = Serializer.DeserializeDictionary(
-                        reg.Read(Fs13RegKeys.FS13_XML) + SFL_C_S);
-                    break;
-                case "FS15":
-                    dic = Serializer.DeserializeDictionary(
-                        reg.Read(Fs15RegKeys.FS15_XML) + SFL_C_S);
-                    break;
-                case "FS17":
-                    dic = Serializer.DeserializeDictionary(
-                        reg.Read(Fs17RegKeys.FS17_XML) + SFL_C_S);
-                    break;
-                case "FS19":
-                    dic = Serializer.DeserializeDictionary(
-                        reg.Read(FS19RegKeys.FS19_XML) + SFL_C_S);
-                    break;
+                switch (gam) {
+                    case "FS11":
+                        dic = Serializer.DeserializeDictionary(
+                            reg.Read(Fs11RegKeys.FS11_XML) + SFL_C_S);
+                        break;
+                    case "FS13":
+                        dic = Serializer.DeserializeDictionary(
+                            reg.Read(Fs13RegKeys.FS13_XML) + SFL_C_S);
+                        break;
+                    case "FS15":
+                        dic = Serializer.DeserializeDictionary(
+                            reg.Read(Fs15RegKeys.FS15_XML) + SFL_C_S);
+                        break;
+                    case "FS17":
+                        dic = Serializer.DeserializeDictionary(
+                            reg.Read(Fs17RegKeys.FS17_XML) + SFL_C_S);
+                        break;
+                    case "FS19":
+                        dic = Serializer.DeserializeDictionary(
+                            reg.Read(FS19RegKeys.FS19_XML) + SFL_C_S);
+                        break;
+                }
+
+                return dic;
             }
-
-            return dic;
         }
 
         /// <summary>
-        /// Gets the specials.
+        ///     Gets the hash listing.
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, string> HashListing {
+            get {
+                Dictionary<string, string> dic = null;
+                var gi = new GameInfo();
+                var gam = gi.GetGame();
+                var reg = new RegWork(true);
+
+                switch (gam) {
+                    case "FS11":
+                        dic = Serializer.DeserializeDictionary(
+                            reg.Read(Fs11RegKeys.FS11_XML) + "hash.xml");
+                        break;
+                    case "FS13":
+                        dic = Serializer.DeserializeDictionary(
+                            reg.Read(Fs13RegKeys.FS13_XML) + "hash.xml");
+                        break;
+                    case "FS15":
+                        dic = Serializer.DeserializeDictionary(
+                            reg.Read(Fs15RegKeys.FS15_XML) + "hash.xml");
+                        break;
+                    case "FS17":
+                        dic = Serializer.DeserializeDictionary(
+                            reg.Read(Fs17RegKeys.FS17_XML) + "hash.xml");
+                        break;
+                    case "FS19":
+                        dic = Serializer.DeserializeDictionary(
+                            reg.Read(FS19RegKeys.FS19_XML) + "hash.xml");
+                        break;
+                }
+
+                return dic;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the group file list.
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, string> ProfileFileList {
+            get {
+                Dictionary<string, string> dic = null;
+                var gi = new GameInfo();
+                var gam = gi.GetGame();
+                var reg = new RegWork(true);
+
+                switch (gam) {
+                    case "FS11":
+                        dic = Serializer.DeserializeDictionary(reg.Read(Fs11RegKeys.FS11_PROFILES) +
+                                                               reg.Read(RegKeys.CURRENT_PROFILE) + @"\" +
+                                                               reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
+                        break;
+                    case "FS13":
+                        dic = Serializer.DeserializeDictionary(reg.Read(Fs13RegKeys.FS13_PROFILES) +
+                                                               reg.Read(RegKeys.CURRENT_PROFILE) + @"\" +
+                                                               reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
+                        break;
+                    case "FS15":
+                        dic = Serializer.DeserializeDictionary(reg.Read(Fs15RegKeys.FS15_PROFILES) +
+                                                               reg.Read(RegKeys.CURRENT_PROFILE) + @"\" +
+                                                               reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
+                        break;
+                    case "FS17":
+                        dic = Serializer.DeserializeDictionary(reg.Read(Fs17RegKeys.FS17_PROFILES) +
+                                                               reg.Read(RegKeys.CURRENT_PROFILE) + @"\" +
+                                                               reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
+                        break;
+                    case "FS19":
+                        dic = Serializer.DeserializeDictionary(reg.Read(FS19RegKeys.FS19_PROFILES) +
+                                                               reg.Read(RegKeys.CURRENT_PROFILE) + @"\" +
+                                                               reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
+                        break;
+                }
+
+                return dic;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the by pass list.
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, string> ByPassList {
+            get {
+                Dictionary<string, string> dic = null;
+                var gi = new GameInfo();
+                var gam = gi.GetGame();
+                var reg = new RegWork(true);
+
+                switch (gam) {
+                    case "FS11":
+                        dic = Serializer.DeserializeDictionary(reg.Read(Fs11RegKeys.FS11_BACKUP) + SPC + @"\" +
+                                                               "bypass.xml");
+                        break;
+                    case "FS13":
+                        dic = Serializer.DeserializeDictionary(reg.Read(Fs13RegKeys.FS13_BACKUP) + SPC + @"\" +
+                                                               "bypass.xml");
+                        break;
+                    case "FS15":
+                        dic = Serializer.DeserializeDictionary(reg.Read(Fs15RegKeys.FS15_BACKUP) + SPC + @"\" +
+                                                               "bypass.xml");
+                        break;
+                    case "FS17":
+                        dic = Serializer.DeserializeDictionary(reg.Read(Fs17RegKeys.FS17_BACKUP) + SPC + @"\" +
+                                                               "bypass.xml");
+                        break;
+                    case "FS19":
+                        dic = Serializer.DeserializeDictionary(reg.Read(FS19RegKeys.FS19_BACKUP) + SPC + @"\" +
+                                                               "bypass.xml");
+                        break;
+                }
+
+                return dic;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the specials.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
         /// <returns></returns>
@@ -114,7 +236,7 @@ namespace Farming_Simulator_Mod_Manager {
         }
 
         /// <summary>
-        /// Writes the specials.
+        ///     Writes the specials.
         /// </summary>
         /// <param name="spc">The SPC.</param>
         /// <param name="fileName">Name of the file.</param>
@@ -148,118 +270,9 @@ namespace Farming_Simulator_Mod_Manager {
         }
 
         /// <summary>
-        /// Gets the hash listing.
+        ///     Writes the by pass list.
         /// </summary>
-        /// <returns></returns>
-        public static Dictionary<string, string> GetHashListing() {
-            Dictionary<string, string> dic = null;
-            var gi = new GameInfo();
-            var gam = gi.GetGame();
-            var reg = new RegWork(true);
-
-            switch (gam) {
-                case "FS11":
-                    dic = Serializer.DeserializeDictionary(
-                        reg.Read(Fs11RegKeys.FS11_XML) + "hash.xml");
-                    break;
-                case "FS13":
-                    dic = Serializer.DeserializeDictionary(
-                        reg.Read(Fs13RegKeys.FS13_XML) + "hash.xml");
-                    break;
-                case "FS15":
-                    dic = Serializer.DeserializeDictionary(
-                        reg.Read(Fs15RegKeys.FS15_XML) + "hash.xml");
-                    break;
-                case "FS17":
-                    dic = Serializer.DeserializeDictionary(
-                        reg.Read(Fs17RegKeys.FS17_XML) + "hash.xml");
-                    break;
-                case "FS19":
-                    dic = Serializer.DeserializeDictionary(
-                        reg.Read(FS19RegKeys.FS19_XML) + "hash.xml");
-                    break;
-            }
-
-            return dic;
-        }
-
-        /// <summary>
-        /// Gets the group file list.
-        /// </summary>
-        /// <returns></returns>
-        public static Dictionary<string, string> GetProfileFileList() {
-            Dictionary<string, string> dic = null;
-            var gi = new GameInfo();
-            var gam = gi.GetGame();
-            var reg = new RegWork(true);
-
-            switch (gam) {
-                case "FS11":
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs11RegKeys.FS11_PROFILES) +
-                                                           reg.Read(RegKeys.CURRENT_PROFILE) + @"\" +
-                                                           reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
-                    break;
-                case "FS13":
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs13RegKeys.FS13_PROFILES) +
-                                                           reg.Read(RegKeys.CURRENT_PROFILE) + @"\" +
-                                                           reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
-                    break;
-                case "FS15":
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs15RegKeys.FS15_PROFILES) +
-                                                           reg.Read(RegKeys.CURRENT_PROFILE) + @"\" +
-                                                           reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
-                    break;
-                case "FS17":
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs17RegKeys.FS17_PROFILES) +
-                                                           reg.Read(RegKeys.CURRENT_PROFILE) + @"\" +
-                                                           reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
-                    break;
-                case "FS19":
-                    dic = Serializer.DeserializeDictionary(reg.Read(FS19RegKeys.FS19_PROFILES) +
-                                                           reg.Read(RegKeys.CURRENT_PROFILE) + @"\" +
-                                                           reg.Read(RegKeys.CURRENT_PROFILE) + ".xml");
-                    break;
-            }
-
-            return dic;
-        }
-
-        /// <summary>
-        /// Gets the by pass list.
-        /// </summary>
-        /// <returns></returns>
-        public static Dictionary<string, string> GetByPassList() {
-            Dictionary<string, string> dic = null;
-            var gi = new GameInfo();
-            var gam = gi.GetGame();
-            var reg = new RegWork(true);
-
-            switch (gam) {
-                case "FS11":
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs11RegKeys.FS11_BACKUP) + SPC + @"\" +
-                                                           "bypass.xml");
-                    break;
-                case "FS13":
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs13RegKeys.FS13_BACKUP) + SPC + @"\" +
-                                                           "bypass.xml");
-                    break;
-                case "FS15":
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs15RegKeys.FS15_BACKUP) + SPC + @"\" +
-                                                           "bypass.xml");
-                    break;
-                case "FS17":
-                    dic = Serializer.DeserializeDictionary(reg.Read(Fs17RegKeys.FS17_BACKUP) + SPC + @"\" +
-                                                           "bypass.xml");
-                    break;
-                case "FS19":
-                    dic = Serializer.DeserializeDictionary(reg.Read(FS19RegKeys.FS19_BACKUP) + SPC + @"\" +
-                                                           "bypass.xml");
-                    break;
-            }
-
-            return dic;
-        }
-
+        /// <param name="dic">The dic.</param>
         public static void WriteByPassList(Dictionary<string, string> dic) {
             var gi = new GameInfo();
             var gam = gi.GetGame();
@@ -268,30 +281,62 @@ namespace Farming_Simulator_Mod_Manager {
             switch (gam) {
                 case "FS11":
                     Serializer.SerializeDictionary(reg.Read(Fs11RegKeys.FS11_BACKUP) + SPC + @"\" +
-                                                           "bypass.xml", dic);
+                                                   "bypass.xml", dic);
                     break;
                 case "FS13":
                     Serializer.SerializeDictionary(reg.Read(Fs13RegKeys.FS13_BACKUP) + SPC + @"\" +
-                                                           "bypass.xml", dic);
+                                                   "bypass.xml", dic);
                     break;
                 case "FS15":
                     Serializer.SerializeDictionary(reg.Read(Fs15RegKeys.FS15_BACKUP) + SPC + @"\" +
-                                                           "bypass.xml", dic);
+                                                   "bypass.xml", dic);
                     break;
                 case "FS17":
                     Serializer.SerializeDictionary(reg.Read(Fs17RegKeys.FS17_BACKUP) + SPC + @"\" +
-                                                           "bypass.xml", dic);
+                                                   "bypass.xml", dic);
                     break;
                 case "FS19":
                     Serializer.SerializeDictionary(reg.Read(FS19RegKeys.FS19_BACKUP) + SPC + @"\" +
-                                                           "bypass.xml", dic);
+                                                   "bypass.xml", dic);
                     break;
             }
         }
-    
 
         /// <summary>
-        /// Gets the group file listing.
+        ///     Writes the hash list.
+        /// </summary>
+        /// <param name="dic">The dic.</param>
+        public static void WriteHashList(Dictionary<string, string> dic) {
+            var gi = new GameInfo();
+            var gam = gi.GetGame();
+            var reg = new RegWork(true);
+
+            switch (gam) {
+                case "FS11":
+                    Serializer.SerializeDictionary(reg.Read(Fs11RegKeys.FS11_XML) +
+                                                   "hash.xml", dic);
+                    break;
+                case "FS13":
+                    Serializer.SerializeDictionary(reg.Read(Fs13RegKeys.FS13_XML) +
+                                                   "hash.xml", dic);
+                    break;
+                case "FS15":
+                    Serializer.SerializeDictionary(reg.Read(Fs15RegKeys.FS15_XML) +
+                                                   "hash.xml", dic);
+                    break;
+                case "FS17":
+                    Serializer.SerializeDictionary(reg.Read(Fs17RegKeys.FS17_XML) +
+                                                   "hash.xml", dic);
+                    break;
+                case "FS19":
+                    Serializer.SerializeDictionary(reg.Read(FS19RegKeys.FS19_XML) +
+                                                   "hash.xml", dic);
+                    break;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the group file listing.
         /// </summary>
         /// <param name="grp">The GRP.</param>
         /// <returns></returns>
@@ -325,6 +370,65 @@ namespace Farming_Simulator_Mod_Manager {
             }
 
             return dic;
+        }
+
+        /// <summary>
+        ///     Deletes the group file list.
+        /// </summary>
+        /// <param name="grp">The GRP.</param>
+        public static void DeleteGroupFileList(string grp) {
+            var dic = GetGroupFileListing(grp);
+            var reg = new RegWork(true);
+            var gam = reg.Read(RegKeys.CURRENT_GAME);
+            var gProf = reg.Read(RegKeys.CURRENT_PROFILE);
+
+            switch (gam) {
+                case "FS11":
+                    var gProfPath = reg.Read(Fs11RegKeys.FS11_PROFILES) + gProf + @"\";
+                    foreach (var v in dic) {
+                        var tmp = gProfPath + v.Key;
+                        if (!tmp.FileExists()) continue;
+                        DeleteFiles.DeleteFilesOrFolders(tmp);
+                    }
+
+                    break;
+                case "FS13":
+                    gProfPath = reg.Read(Fs13RegKeys.FS13_PROFILES) + gProf + @"\";
+                    foreach (var v in dic) {
+                        var tmp = gProfPath + v.Key;
+                        if (!tmp.FileExists()) continue;
+                        DeleteFiles.DeleteFilesOrFolders(tmp);
+                    }
+
+                    break;
+                case "FS15":
+                    gProfPath = reg.Read(Fs15RegKeys.FS15_PROFILES) + gProf + @"\";
+                    foreach (var v in dic) {
+                        var tmp = gProfPath + v.Key;
+                        if (!tmp.FileExists()) continue;
+                        DeleteFiles.DeleteFilesOrFolders(tmp);
+                    }
+
+                    break;
+                case "FS17":
+                    gProfPath = reg.Read(Fs17RegKeys.FS17_PROFILES) + gProf + @"\";
+                    foreach (var v in dic) {
+                        var tmp = gProfPath + v.Key;
+                        if (!tmp.FileExists()) continue;
+                        DeleteFiles.DeleteFilesOrFolders(tmp);
+                    }
+
+                    break;
+                case "FS19":
+                    gProfPath = reg.Read(FS19RegKeys.FS19_PROFILES) + gProf + @"\";
+                    foreach (var v in dic) {
+                        var tmp = gProfPath + v.Key;
+                        if (!tmp.FileExists()) continue;
+                        DeleteFiles.DeleteFilesOrFolders(tmp, false);
+                    }
+
+                    break;
+            }
         }
     }
 }

@@ -39,15 +39,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 using Extensions;
 
 namespace Farming_Simulator_Mod_Manager {
+    /// <inheritdoc />
     /// <summary>
-    /// 
     /// </summary>
-    /// <seealso cref="System.Windows.Forms.Form" />
+    /// <seealso cref="T:System.Windows.Forms.Form" />
     public partial class Specials : Form {
         /// <summary>
         /// 
@@ -70,14 +69,15 @@ namespace Farming_Simulator_Mod_Manager {
             InitializeComponent();
         }
 
+        /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="Specials"/> class.
+        /// Initializes a new instance of the <see cref="T:Farming_Simulator_Mod_Manager.Specials" /> class.
         /// </summary>
         /// <param name="components">The components.</param>
         /// <param name="lstSpecials">The LST specials.</param>
         /// <param name="contextMenuStrip1">The context menu strip1.</param>
         /// <param name="removeModToolStripMenuItem">The remove mod tool strip menu item.</param>
-        /// <exception cref="ArgumentNullException">
+        /// <exception cref="T:System.ArgumentNullException">
         /// components
         /// or
         /// lstSpecials
@@ -200,11 +200,7 @@ namespace Farming_Simulator_Mod_Manager {
 
             Serializer.SerializeDictionary(pth, _dic);
             txtFileName.Text = "";
-            Dispose();
-        }
-
-        private void lstArchive_SelectedIndexChanged(object sender, EventArgs e) {
-            
+            InitSpecials();
         }
 
         private void button3_Click(object sender, EventArgs e) {
@@ -212,7 +208,7 @@ namespace Farming_Simulator_Mod_Manager {
         }
 
         private void addFileToolStripMenuItem_Click(object sender, EventArgs e) {
-            var fullList = Utils.GetFileListing();
+            var fullList = Utils.CompleteSortedList;
             var ofd = new OpenFileDialog {Filter = @"zip files (*.zip)|*.zip", CheckFileExists = true};
             ofd.ShowDialog();
             var tmp = ofd.SafeFileName;
@@ -251,9 +247,6 @@ namespace Farming_Simulator_Mod_Manager {
             }
 
             label5.Text = @"FileCount: " + lstFiles.Items.Count;
-        }
-
-        private void lstFiles_SelectedIndexChanged(object sender, EventArgs e) {
         }
 
         private void addSpecialsToCurrentProfileToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -298,7 +291,8 @@ namespace Farming_Simulator_Mod_Manager {
             foreach (var v in dic) {
                 var tmp = profile + v.Key;
                 if (tmp.FileExists()) continue;
-                CreateHardLink(tmp, v.Value + @"\" + v.Key, IntPtr.Zero);
+                //CreateHardLink(tmp, v.Value + @"\" + v.Key, IntPtr.Zero);
+                Working.CreateLink(tmp, v.Value + @"\" + v.Key);
             }
 
             var lc = new ListCreator();
@@ -374,10 +368,14 @@ namespace Farming_Simulator_Mod_Manager {
                     break;
             }
 
-            if (tmp.FileExists()) {
-                DeleteFiles.DeleteFilesOrFolders(tmp);
-                InitSpecials();
-            }
+            if (!tmp.FileExists()) return;
+            DeleteFiles.DeleteFilesOrFolders(tmp);
+            InitSpecials();
+        }
+
+        private void verifySpecialsToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (lstArchive.SelectedItem.IsNull()) return;
+            Working.VerifyMods(lstArchive.SelectedItem.ToString());
         }
     }
 }

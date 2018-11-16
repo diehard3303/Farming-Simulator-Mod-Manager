@@ -88,7 +88,7 @@ namespace Farming_Simulator_Mod_Manager {
             if ((attr & FileAttributes.Directory) == FileAttributes.Directory) {
                 var directory = new DirectoryInfo(path);
                 try {
-                    foreach (var file in directory.GetFiles()) DeleteFile(file.ToString());
+                    foreach (var file in directory.GetFiles()) DeleteFileA(file.ToString());
                     foreach (var subDirectory in directory.GetDirectories()) subDirectory.Delete(true);
                     directory.EmptyThisDirectory();
                     directory.Delete(true);
@@ -100,7 +100,7 @@ namespace Farming_Simulator_Mod_Manager {
             else {
                 try {
                     if (!path.FileExists()) return;
-                    del = DeleteFile(path);
+                    del = DeleteFileA(path);
                 }
                 catch (Exception d) {
                     MsgBx.Msg(d.ToString(), "Deletion Error");
@@ -111,13 +111,9 @@ namespace Farming_Simulator_Mod_Manager {
             if (del) MsgBx.Msg("File(s) have been deleted", "File Deletion");
         }
 
-        /// <summary>
-        ///     Deletes the file.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern bool DeleteFile(string path);
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool DeleteFileA([MarshalAs(UnmanagedType.LPStr)] string lpFileName);
 
         private static bool IsDirectory(string dta) {
             var isDir = false;

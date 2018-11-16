@@ -194,7 +194,7 @@ namespace Farming_Simulator_Mod_Manager {
 
         private static bool CheckPath(string t) {
             var inFo = new DirectoryInfo(t);
-            var fnd = SymLinks.GetSymbolicLinkTarget(inFo);
+            var fnd =inFo.GetSymbolicLinkTarget();
             return fnd.IsNullOrEmpty();
         }
     }

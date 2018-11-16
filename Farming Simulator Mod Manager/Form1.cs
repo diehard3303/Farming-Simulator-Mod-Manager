@@ -67,13 +67,6 @@ namespace Farming_Simulator_Mod_Manager {
             IntPtr lpSecurityAttributes
         );
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        private static extern bool CreateSymbolicLink(
-            string lpSymlinkFileName,
-            string lpTargetFileName,
-            SymbolicLink dwFlags
-        );
 
         private void btnExit_Click(object sender, EventArgs e) {
             Application.Exit();
@@ -291,31 +284,27 @@ namespace Farming_Simulator_Mod_Manager {
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e) {
-            if (radioButton1.Checked) {
-                Browser.BrowseFolders("repo");
-                ResetRb();
-            }
+            if (!radioButton1.Checked) return;
+            Browser.BrowseFolders("repo");
+            ResetRb();
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e) {
-            if (radioButton3.Checked) {
-                Browser.BrowseFolders("work");
-                ResetRb();
-            }
+            if (!radioButton3.Checked) return;
+            Browser.BrowseFolders("work");
+            ResetRb();
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e) {
-            if (radioButton2.Checked) {
-                Browser.BrowseFolders("groups");
-                ResetRb();
-            }
+            if (!radioButton2.Checked) return;
+            Browser.BrowseFolders("groups");
+            ResetRb();
         }
 
         private void radioButton4_CheckedChanged(object sender, EventArgs e) {
-            if (radioButton4.Checked) {
-                Browser.BrowseFolders("backup");
-                ResetRb();
-            }
+            if (!radioButton4.Checked) return;
+            Browser.BrowseFolders("backup");
+            ResetRb();
         }
 
         private void ResetRb() {
@@ -327,7 +316,6 @@ namespace Farming_Simulator_Mod_Manager {
             radioButton6.Checked = false;
             radioButton7.Checked = false;
             radioButton8.Checked = false;
-            
         }
 
         private void button1_Click(object sender, EventArgs e) {
@@ -337,67 +325,49 @@ namespace Farming_Simulator_Mod_Manager {
         }
 
         private void radioButton8_CheckedChanged(object sender, EventArgs e) {
-            if (radioButton8.Checked) {
-                var re = new ReadLogFile();
-                re.ReadLogFiles();
-                ResetRb();
-            }
+            if (!radioButton8.Checked) return;
+            var re = new ReadLogFile();
+            re.ReadLogFiles();
+            ResetRb();
         }
 
         private void radioButton5_CheckedChanged(object sender, EventArgs e) {
-            if (radioButton5.Checked) {
-                Browser.BrowseFolders("list");
-                ResetRb();
-            }
+            if (!radioButton5.Checked) return;
+            Browser.BrowseFolders("list");
+            ResetRb();
         }
 
         private void radioButton7_CheckedChanged(object sender, EventArgs e) {
-            if (radioButton7.Checked) {
-                var em = new EditMod();
-                em.ShowDialog();
-                ResetRb();
-            }
+            if (!radioButton7.Checked) return;
+            var em = new EditMod();
+            em.ShowDialog();
+            ResetRb();
         }
 
         private void radioButton6_CheckedChanged(object sender, EventArgs e) {
             //specials
+            
         }
 
         private void radioButton10_CheckedChanged(object sender, EventArgs e) {
-            if (radioButton10.Checked) {
-                Vars.HardLink = true;
-                Vars.SoftLink = false;
-                Vars.FileCopy = false;
-            }
+            if (!radioButton10.Checked) return;
+            Vars.HardLink = true;
+            Vars.SoftLink = false;
+            Vars.FileCopy = false;
         }
 
         private void radioButton9_CheckedChanged(object sender, EventArgs e) {
-            if (radioButton9.Checked) {
-                Vars.SoftLink = true;
-                Vars.HardLink = false;
-                Vars.FileCopy = false;
-            }
+            if (!radioButton9.Checked) return;
+            Vars.SoftLink = true;
+            Vars.HardLink = false;
+            Vars.FileCopy = false;
         }
 
         private void radioButton11_CheckedChanged(object sender, EventArgs e) {
-            if (radioButton11.Checked) {
-                Vars.FileCopy = true;
-                Vars.SoftLink = false;
-                Vars.HardLink = false;
-            }
-        }
-
-        /// <summary>
-        ///     Creates the link.
-        /// </summary>
-        /// <param name="link">The link.</param>
-        /// <param name="orig">The original.</param>
-        public void CreateLink(string link, string orig) {
-            if (Vars.SoftLink) CreateSymbolicLink(link, orig, SymbolicLink.File);
-
-            if (Vars.HardLink) CreateHardLink(link, orig, IntPtr.Zero);
-
-            if (Vars.FileCopy) FileCopyMove.FileCopy(orig, link);
+            if (!radioButton11.Checked) return;
+            Vars.FileCopy = true;
+            Vars.SoftLink = false;
+            Vars.HardLink = false;
         }
 
         private void hashAllFilesToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -422,7 +392,7 @@ namespace Farming_Simulator_Mod_Manager {
 
         private void saveProfileAsSpecialToolStripMenuItem1_Click(object sender, EventArgs e) {
             if (lstProfiles.SelectedItem.ToString().IsNull()) return;
-            Vars.Dict = Utils.GetProfileFileList();
+            Vars.Dict = Utils.ProfileFileList;
             var frm = new Specials();
             frm.ShowDialog();
         }
@@ -444,12 +414,15 @@ namespace Farming_Simulator_Mod_Manager {
         }
 
         private void createNewProfileFromGroupToolStripMenuItem1_Click(object sender, EventArgs e) {
+            CreateProfileFromGroup();
+        }
+
+        private void CreateProfileFromGroup() {
             if (lstGroups.SelectedItem.IsNull()) return;
             var nProf = lstGroups.SelectedItem.ToString();
             var gi = new GameInfo();
             var gam = gi.GetGame();
             var dic = Utils.GetGroupFileListing(nProf);
-            ;
             var reg = new RegWork(true);
 
             switch (gam) {
@@ -462,7 +435,7 @@ namespace Farming_Simulator_Mod_Manager {
                         var orig = v.Value + @"\" + v.Key;
                         //CreateSymbolicLink(tmp, orig, SymbolicLink.File);
                         //CreateHardLink(tmp, orig, IntPtr.Zero);
-                        CreateLink(tmp, orig);
+                        Working.CreateLink(tmp, orig);
                     }
 
                     Serializer.SerializeDictionary(proLoc + @"\" + nProf + ".xml", dic);
@@ -476,7 +449,7 @@ namespace Farming_Simulator_Mod_Manager {
                         var orig = v.Value + @"\" + v.Key;
                         //CreateSymbolicLink(tmp, orig, SymbolicLink.File);
                         //CreateHardLink(tmp, orig, IntPtr.Zero);
-                        CreateLink(tmp, orig);
+                        Working.CreateLink(tmp, orig);
                     }
 
                     Serializer.SerializeDictionary(proLoc + @"\" + nProf + ".xml", dic);
@@ -490,7 +463,7 @@ namespace Farming_Simulator_Mod_Manager {
                         var orig = v.Value + @"\" + v.Key;
                         //CreateSymbolicLink(tmp, orig, SymbolicLink.File);
                         //CreateHardLink(tmp, orig, IntPtr.Zero);
-                        CreateLink(tmp, orig);
+                        Working.CreateLink(tmp, orig);
                     }
 
                     Serializer.SerializeDictionary(proLoc + @"\" + nProf + ".xml", dic);
@@ -504,7 +477,7 @@ namespace Farming_Simulator_Mod_Manager {
                         var orig = v.Value + @"\" + v.Key;
                         //CreateSymbolicLink(tmp, orig, SymbolicLink.File);
                         //CreateHardLink(tmp,orig, IntPtr.Zero);
-                        CreateLink(tmp, orig);
+                        Working.CreateLink(tmp, orig);
                     }
 
                     Serializer.SerializeDictionary(proLoc + @"\" + nProf + ".xml", dic);
@@ -518,7 +491,7 @@ namespace Farming_Simulator_Mod_Manager {
                         var orig = v.Value + @"\" + v.Key;
                         //CreateSymbolicLink(tmp, orig, SymbolicLink.File);
                         //CreateHardLink(tmp, orig, IntPtr.Zero);
-                        CreateLink(tmp, orig);
+                        Working.CreateLink(tmp, orig);
                     }
 
                     Serializer.SerializeDictionary(proLoc + @"\" + nProf + ".xml", dic);
@@ -566,6 +539,10 @@ namespace Farming_Simulator_Mod_Manager {
         }
 
         private void createProfileFromFileMapToolStripMenuItem1_Click(object sender, EventArgs e) {
+            CreateProfileFromMapFile();
+        }
+
+        private void CreateProfileFromMapFile() {
             if (lstGroupMods.SelectedItem.IsNull()) return;
             var map = lstGroupMods.SelectedItem.ToString();
             var nam = map.GetNameNoExtension();
@@ -579,65 +556,70 @@ namespace Farming_Simulator_Mod_Manager {
                     var proLoc = reg.Read(Fs11RegKeys.FS11_PROFILES) + nam;
                     Directory.CreateDirectory(proLoc);
                     var dic = new Dictionary<string, string>();
-                    var pth = reg.Read(Fs11RegKeys.FS11_GROUPS) + lstGroups.SelectedItem + @"\" + map.GetFileName();
-                    dic.Add(map.GetFileName(), reg.Read(Fs11RegKeys.FS11_GROUPS) + lstGroups.SelectedItem + @"\");
+                    var modList = Utils.CompleteSortedList;
+                    modList.TryGetValue(map.GetFileName(), out var fnd);
+                    if (fnd.IsNullOrEmpty()) return;
+                    var pth = fnd + @"\" + map.GetFileName();
+                    dic.Add(map.GetFileName(), fnd + @"\");
                     var tmp = proLoc + @"\" + map.GetFileName();
                     var orig = pth;
-                    // FileCopyMove.FileCopy(orig, tmp);
-                    //CreateHardLink(tmp, orig, IntPtr.Zero);
-                    CreateLink(tmp, orig);
+                    Working.CreateLink(tmp, orig);
                     Serializer.SerializeDictionary(proLoc + @"\" + nam + ".xml", dic);
                     break;
                 case "FS13":
                     proLoc = reg.Read(Fs13RegKeys.FS13_PROFILES) + nam;
                     Directory.CreateDirectory(proLoc);
                     dic = new Dictionary<string, string>();
-                    pth = reg.Read(Fs13RegKeys.FS13_GROUPS) + lstGroups.SelectedItem + @"\" + map.GetFileName();
-                    dic.Add(map.GetFileName(), reg.Read(Fs13RegKeys.FS13_GROUPS) + lstGroups.SelectedItem + @"\");
+                    modList = Utils.CompleteSortedList;
+                    modList.TryGetValue(map.GetFileName(), out fnd);
+                    if (fnd.IsNullOrEmpty()) return;
+                    pth = fnd + @"\" + map.GetFileName();
+                    dic.Add(map.GetFileName(), fnd + @"\");
                     tmp = proLoc + @"\" + map.GetFileName();
                     orig = pth;
-                    // FileCopyMove.FileCopy(orig, tmp);
-                    //CreateHardLink(tmp, orig, IntPtr.Zero);
-                    CreateLink(tmp, orig);
+                    Working.CreateLink(tmp, orig);
                     Serializer.SerializeDictionary(proLoc + @"\" + nam + ".xml", dic);
                     break;
                 case "FS15":
                     proLoc = reg.Read(Fs15RegKeys.FS15_PROFILES) + nam;
                     Directory.CreateDirectory(proLoc);
                     dic = new Dictionary<string, string>();
-                    pth = reg.Read(Fs15RegKeys.FS15_GROUPS) + lstGroups.SelectedItem + @"\" + map.GetFileName();
-                    dic.Add(map.GetFileName(), reg.Read(Fs15RegKeys.FS15_GROUPS) + lstGroups.SelectedItem + @"\");
+                    modList = Utils.CompleteSortedList;
+                    modList.TryGetValue(map.GetFileName(), out fnd);
+                    if (fnd.IsNullOrEmpty()) return;
+                    pth = fnd + @"\" + map.GetFileName();
+                    dic.Add(map.GetFileName(), fnd + @"\");
                     tmp = proLoc + @"\" + map.GetFileName();
                     orig = pth;
-                    // FileCopyMove.FileCopy(orig, tmp);
-                    //CreateHardLink(tmp, orig, IntPtr.Zero);
-                    CreateLink(tmp, orig);
+                    Working.CreateLink(tmp, orig);
                     Serializer.SerializeDictionary(proLoc + @"\" + nam + ".xml", dic);
                     break;
                 case "FS17":
                     proLoc = reg.Read(Fs17RegKeys.FS17_PROFILES) + nam;
                     Directory.CreateDirectory(proLoc);
                     dic = new Dictionary<string, string>();
-                    pth = reg.Read(Fs17RegKeys.FS17_GROUPS) + lstGroups.SelectedItem + @"\" + map.GetFileName();
-                    dic.Add(map.GetFileName(), reg.Read(Fs17RegKeys.FS17_GROUPS) + lstGroups.SelectedItem + @"\");
+                    modList = Utils.CompleteSortedList;
+                    modList.TryGetValue(map.GetFileName(), out fnd);
+                    if (fnd.IsNullOrEmpty()) return;
+                    pth = fnd + @"\" + map.GetFileName();
+                    dic.Add(map.GetFileName(), fnd + @"\");
                     tmp = proLoc + @"\" + map.GetFileName();
                     orig = pth;
-                    // FileCopyMove.FileCopy(orig, tmp);
-                    //CreateHardLink(tmp, orig, IntPtr.Zero);
-                    CreateLink(tmp, orig);
+                    Working.CreateLink(tmp, orig);
                     Serializer.SerializeDictionary(proLoc + @"\" + nam + ".xml", dic);
                     break;
                 case "FS19":
                     proLoc = reg.Read(FS19RegKeys.FS19_PROFILES) + nam;
                     Directory.CreateDirectory(proLoc);
                     dic = new Dictionary<string, string>();
-                    pth = reg.Read(FS19RegKeys.FS19_GROUPS) + lstGroups.SelectedItem + @"\" + map.GetFileName();
-                    dic.Add(map.GetFileName(), reg.Read(FS19RegKeys.FS19_GROUPS) + lstGroups.SelectedItem + @"\");
+                    modList = Utils.CompleteSortedList;
+                    modList.TryGetValue(map.GetFileName(), out fnd);
+                    if (fnd.IsNullOrEmpty()) return;
+                    pth = fnd + @"\" + map.GetFileName();
+                    dic.Add(map.GetFileName(), fnd + @"\");
                     tmp = proLoc + @"\" + map.GetFileName();
                     orig = pth;
-                    // FileCopyMove.FileCopy(orig, tmp);
-                    //CreateHardLink(tmp, orig, IntPtr.Zero);
-                    CreateLink(tmp, orig);
+                    Working.CreateLink(tmp, orig);
                     Serializer.SerializeDictionary(proLoc + @"\" + nam + ".xml", dic);
                     break;
             }
@@ -647,13 +629,8 @@ namespace Farming_Simulator_Mod_Manager {
             foreach (var v in lst) lstProfiles.Items.Add(v.GetLastFolderName());
         }
 
-        private enum SymbolicLink {
-            File = 0,
-            Directory = 1
-        }
-
         private void searchGroupsToolStripMenuItem1_Click(object sender, EventArgs e) {
-            var input = InputBox("Type Search Pattern Here", "Search Groups", "Default", -1, -1);
+            var input = InputBox("Type Search Pattern Here", "Search Groups", "Default");
             if (input.IsNullOrEmpty()) return;
             var lst = Search.SearchMods(input);
             var res = new Results();
@@ -661,9 +638,13 @@ namespace Farming_Simulator_Mod_Manager {
         }
 
         private void addGroupToNoSearchGroupToolStripMenuItem_Click(object sender, EventArgs e) {
+            AddToNoSearchList();
+        }
+
+        private void AddToNoSearchList() {
             if (lstGroups.SelectedItem.IsNull()) return;
             var tmp = lstGroups.SelectedItem.ToString();
-            var dic = Utils.GetByPassList();
+            var dic = Utils.ByPassList;
             var reg = new RegWork(true);
             var gi = new GameInfo();
             var gam = gi.GetGame();
@@ -690,6 +671,14 @@ namespace Farming_Simulator_Mod_Manager {
             if (dic.ContainsKey(tmp)) return;
             dic.Add(tmp, grp);
             Utils.WriteByPassList(dic);
+        }
+
+        private void deleteGroupFilesInProfileToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (lstGroups.SelectedItem.IsNull()) return;
+            Utils.DeleteGroupFileList(lstGroups.SelectedItem.ToString());
+            var lc = new ListCreator();
+            lc.CreateSortedLists();
+            MsgBx.Msg("Profile Files Deleted.", "I/O");
         }
     }
 }

@@ -43,7 +43,6 @@ namespace Farming_Simulator_Mod_Manager {
         private const string FS15 = "FS15";
         private const string FS17 = "FS17";
         private const string FS19 = "FS19";
-        private const string SF_COMP_S = @"\sortedFileListComplete.xml";
         private const string PROFILE_PATH_END = @" />";
         private const string SEARCH_PATTERN = "*.zip";
 
@@ -69,6 +68,20 @@ namespace Farming_Simulator_Mod_Manager {
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool DeleteFileA([MarshalAs(UnmanagedType.LPStr)] string lpFileName);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        private static extern bool CreateSymbolicLink(
+            string lpSymlinkFileName,
+            string lpTargetFileName,
+            SymbolicLink dwFlags
+        );
+
+        private enum SymbolicLink {
+            File = 0,
+            Directory = 1
+        }
+
 
         /// <summary>
         /// Mods to repo.
@@ -151,6 +164,19 @@ namespace Farming_Simulator_Mod_Manager {
         }
 
         /// <summary>
+        ///     Creates the link.
+        /// </summary>
+        /// <param name="link">The link.</param>
+        /// <param name="orig">The original.</param>
+        public static void CreateLink(string link, string orig) {
+            if (Vars.SoftLink) CreateSymbolicLink(link, orig, 0);
+
+            if (Vars.HardLink) CreateHardLink(link, orig, IntPtr.Zero);
+
+            if (Vars.FileCopy) FileCopyMove.FileCopy(orig, link);
+        }
+
+        /// <summary>
         /// Adds the mod to profile.
         /// </summary>
         /// <param name="mod">The mod.</param>
@@ -167,11 +193,12 @@ namespace Farming_Simulator_Mod_Manager {
                 case "FS11":
                     var profPth = reg.Read(Fs11RegKeys.FS11_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     prof = profPth + mod;
-                    dic = Utils.GetFileListing();
+                    dic = Utils.CompleteSortedList;
                     dic.TryGetValue(mod, out var fnd);
                     if (fnd.IsNullOrEmpty()) return;
                     var modPth = fnd + @"\" + mod;
-                    CreateHardLink(prof, modPth, IntPtr.Zero);
+                    //CreateHardLink(prof, modPth, IntPtr.Zero);
+                    CreateLink(prof, modPth);
 
                     lst = GetFilesFolders.GetFiles(profPth, "*.zip");
                     foreach (var v in lst) {
@@ -185,11 +212,12 @@ namespace Farming_Simulator_Mod_Manager {
                 case "FS13":
                     profPth = reg.Read(Fs13RegKeys.FS13_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     prof = profPth + mod;
-                    dic = Utils.GetFileListing();
+                    dic = Utils.CompleteSortedList;
                     dic.TryGetValue(mod, out fnd);
                     if (fnd.IsNullOrEmpty()) return;
                     modPth = fnd + @"\" + mod;
-                    CreateHardLink(prof, modPth, IntPtr.Zero);
+                    //CreateHardLink(prof, modPth, IntPtr.Zero);
+                    CreateLink(prof, modPth);
 
                     lst = GetFilesFolders.GetFiles(profPth, "*.zip");
                     foreach (var v in lst) {
@@ -203,11 +231,12 @@ namespace Farming_Simulator_Mod_Manager {
                 case "FS15":
                     profPth = reg.Read(Fs15RegKeys.FS15_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     prof = profPth + mod;
-                    dic = Utils.GetFileListing();
+                    dic = Utils.CompleteSortedList;
                     dic.TryGetValue(mod, out fnd);
                     if (fnd.IsNullOrEmpty()) return;
                     modPth = fnd + @"\" + mod;
-                    CreateHardLink(prof, modPth, IntPtr.Zero);
+                    //CreateHardLink(prof, modPth, IntPtr.Zero);
+                    CreateLink(prof, modPth);
 
                     lst = GetFilesFolders.GetFiles(profPth, "*.zip");
                     foreach (var v in lst) {
@@ -221,11 +250,12 @@ namespace Farming_Simulator_Mod_Manager {
                 case "FS17":
                     profPth = reg.Read(Fs17RegKeys.FS17_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     prof = profPth + mod;
-                    dic = Utils.GetFileListing();
+                    dic = Utils.CompleteSortedList;
                     dic.TryGetValue(mod, out fnd);
                     if (fnd.IsNullOrEmpty()) return;
                     modPth = fnd + @"\" + mod;
-                    CreateHardLink(prof, modPth, IntPtr.Zero);
+                    //CreateHardLink(prof, modPth, IntPtr.Zero);
+                    CreateLink(prof, modPth);
 
                     lst = GetFilesFolders.GetFiles(profPth, "*.zip");
                     foreach (var v in lst) {
@@ -239,11 +269,12 @@ namespace Farming_Simulator_Mod_Manager {
                 case "FS19":
                     profPth = reg.Read(FS19RegKeys.FS19_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     prof = profPth + mod;
-                    dic = Utils.GetFileListing();
+                    dic = Utils.CompleteSortedList;
                     dic.TryGetValue(mod, out fnd);
                     if (fnd.IsNullOrEmpty()) return;
                     modPth = fnd + @"\" + mod;
-                    CreateHardLink(prof, modPth, IntPtr.Zero);
+                    //CreateHardLink(prof, modPth, IntPtr.Zero);
+                    CreateLink(prof, modPth);
 
                     lst = GetFilesFolders.GetFiles(profPth, "*.zip");
                     foreach (var v in lst) {
@@ -293,7 +324,7 @@ namespace Farming_Simulator_Mod_Manager {
             foreach (var s in tmp) {
                 if (!s.Contains(@"<modsDirectoryOverride")) continue;
                 tmp.Remove(s);
-                tmp.Insert(6, SetGameSettingString());
+                tmp.Insert(6, SetGameSettingString);
                 break;
             }
 
@@ -301,46 +332,48 @@ namespace Farming_Simulator_Mod_Manager {
         }
 
 
-        private static string SetGameSettingString() {
-            var reg = new RegWork(true);
-            var gam = reg.Read(RegKeys.CURRENT_GAME);
-            var profile = reg.Read(RegKeys.CURRENT_PROFILE) + "\\";
-            string profilePath;
-            var pth = String.Empty;
+        private static string SetGameSettingString {
+            get {
+                var reg = new RegWork(true);
+                var gam = reg.Read(RegKeys.CURRENT_GAME);
+                var profile = reg.Read(RegKeys.CURRENT_PROFILE) + "\\";
+                string profilePath;
+                var pth = string.Empty;
 
-            switch (gam) {
-                case FS11:
-                    profilePath = reg.Read(Fs11RegKeys.FS11_PROFILES);
-                    pth =
-                        $"{ProfilePathPreTrue}{Vars.QuoteMark}{profilePath}{profile}{Vars.QuoteMark} {PROFILE_PATH_END}";
-                    break;
+                switch (gam) {
+                    case FS11:
+                        profilePath = reg.Read(Fs11RegKeys.FS11_PROFILES);
+                        pth =
+                            $"{ProfilePathPreTrue}{Vars.QuoteMark}{profilePath}{profile}{Vars.QuoteMark} {PROFILE_PATH_END}";
+                        break;
 
-                case FS13:
-                    profilePath = reg.Read(Fs13RegKeys.FS13_PROFILES);
-                    pth =
-                        $"{ProfilePathPreTrue}{Vars.QuoteMark}{profilePath}{profile}{Vars.QuoteMark} {PROFILE_PATH_END}";
-                    break;
+                    case FS13:
+                        profilePath = reg.Read(Fs13RegKeys.FS13_PROFILES);
+                        pth =
+                            $"{ProfilePathPreTrue}{Vars.QuoteMark}{profilePath}{profile}{Vars.QuoteMark} {PROFILE_PATH_END}";
+                        break;
 
-                case FS15:
-                    profilePath = reg.Read(Fs15RegKeys.FS15_PROFILES);
-                    pth =
-                        $"{ProfilePathPreTrue}{Vars.QuoteMark}{profilePath}{profile}{Vars.QuoteMark} {PROFILE_PATH_END}";
-                    break;
+                    case FS15:
+                        profilePath = reg.Read(Fs15RegKeys.FS15_PROFILES);
+                        pth =
+                            $"{ProfilePathPreTrue}{Vars.QuoteMark}{profilePath}{profile}{Vars.QuoteMark} {PROFILE_PATH_END}";
+                        break;
 
-                case FS17:
-                    profilePath = reg.Read(Fs17RegKeys.FS17_PROFILES);
-                    pth =
-                        $"{ProfilePathPreTrue}{Vars.QuoteMark}{profilePath}{profile}{Vars.QuoteMark} {PROFILE_PATH_END}";
-                    break;
+                    case FS17:
+                        profilePath = reg.Read(Fs17RegKeys.FS17_PROFILES);
+                        pth =
+                            $"{ProfilePathPreTrue}{Vars.QuoteMark}{profilePath}{profile}{Vars.QuoteMark} {PROFILE_PATH_END}";
+                        break;
 
-                case FS19:
-                    profilePath = reg.Read(FS19RegKeys.FS19_PROFILES);
-                    pth =
-                        $"{ProfilePathPreTrue}{Vars.QuoteMark}{profilePath}{profile}{Vars.QuoteMark} {PROFILE_PATH_END}";
-                    break;
+                    case FS19:
+                        profilePath = reg.Read(FS19RegKeys.FS19_PROFILES);
+                        pth =
+                            $"{ProfilePathPreTrue}{Vars.QuoteMark}{profilePath}{profile}{Vars.QuoteMark} {PROFILE_PATH_END}";
+                        break;
+                }
+
+                return pth;
             }
-
-            return pth;
         }
 
         /// <summary>
@@ -390,12 +423,12 @@ namespace Farming_Simulator_Mod_Manager {
             var gam = reg.Read(RegKeys.CURRENT_GAME);
             var prof = reg.Read(RegKeys.CURRENT_PROFILE);
             var dic = new Dictionary<string, string>();
-            var dic2 = Utils.GetFileListing();
+            var dic2 = Utils.CompleteSortedList;
 
-            var hash = Utils.GetHashListing();
+            /*var hash = Utils.HashListing;
             if (hash.ContainsKey(mod.GetFileName())) {
                 hash.Remove(mod.GetFileName());
-            }
+            }*/
 
             IEnumerable<string> lst;
             var ls = new ListCreator();
@@ -403,7 +436,7 @@ namespace Farming_Simulator_Mod_Manager {
 
             switch (gam) {
                 case FS11:
-                    DeleteFiles.DeleteFilesOrFolders(reg.Read(Fs11RegKeys.FS11_PROFILES) + @"\" + prof + @"\" +
+                    DeleteFileA(reg.Read(Fs11RegKeys.FS11_PROFILES) + @"\" + prof + @"\" +
                                                      mod.GetFileName());
                     lst = GetFilesFolders.GetFiles(reg.Read(Fs11RegKeys.FS11_PROFILES) + @"\" + prof + @"\", "*.zip");
                     foreach (var v in lst) {
@@ -416,7 +449,7 @@ namespace Farming_Simulator_Mod_Manager {
                         dic);
                     break;
                 case FS13:
-                    DeleteFiles.DeleteFilesOrFolders(reg.Read(Fs13RegKeys.FS13_PROFILES) + @"\" + prof + @"\" +
+                    DeleteFileA(reg.Read(Fs13RegKeys.FS13_PROFILES) + @"\" + prof + @"\" +
                                                      mod.GetFileName());
                     lst = GetFilesFolders.GetFiles(reg.Read(Fs13RegKeys.FS13_PROFILES) + @"\" + prof + @"\", "*.zip");
                    foreach (var v in lst) {
@@ -429,7 +462,7 @@ namespace Farming_Simulator_Mod_Manager {
                         dic);
                     break;
                 case FS15:
-                    DeleteFiles.DeleteFilesOrFolders(reg.Read(Fs15RegKeys.FS15_PROFILES) + @"\" + prof + @"\" +
+                    DeleteFileA(reg.Read(Fs15RegKeys.FS15_PROFILES) + @"\" + prof + @"\" +
                                                      mod.GetFileName());
                     lst = GetFilesFolders.GetFiles(reg.Read(Fs15RegKeys.FS15_PROFILES) + @"\" + prof + @"\", "*.zip");
                    foreach (var v in lst) {
@@ -442,8 +475,8 @@ namespace Farming_Simulator_Mod_Manager {
                         dic);
                     break;
                 case FS17:
-                    DeleteFiles.DeleteFilesOrFolders(reg.Read(Fs17RegKeys.FS17_PROFILES) + @"\" + prof + @"\" +
-                                                     mod.GetFileName());
+                    var tmp = reg.Read(Fs17RegKeys.FS17_PROFILES) + prof + @"\" + mod.GetFileName();
+                    DeleteFileA(tmp);
                     lst = GetFilesFolders.GetFiles(reg.Read(Fs17RegKeys.FS17_PROFILES) + @"\" + prof + @"\", "*.zip");
                     foreach (var v in lst) {
                         dic2.TryGetValue(v.GetFileName(), out var fnd);
@@ -455,7 +488,7 @@ namespace Farming_Simulator_Mod_Manager {
                         dic);
                     break;
                 case FS19:
-                    DeleteFiles.DeleteFilesOrFolders(reg.Read(FS19RegKeys.FS19_PROFILES) + @"\" + prof + @"\" +
+                    DeleteFileA(reg.Read(FS19RegKeys.FS19_PROFILES) + @"\" + prof + @"\" +
                                                      mod.GetFileName());
                     lst = GetFilesFolders.GetFiles(reg.Read(FS19RegKeys.FS19_PROFILES) + @"\" + prof + @"\", "*.zip");
                     foreach (var v in lst) {
@@ -482,7 +515,7 @@ namespace Farming_Simulator_Mod_Manager {
             var lc = new ListCreator();
             var reg = new RegWork(true);
             var gam = reg.Read(RegKeys.CURRENT_GAME);
-            var hash = Utils.GetHashListing();
+            var hash = Utils.HashListing;
 
             switch (gam) {
                 case FS11:
@@ -538,6 +571,7 @@ namespace Farming_Simulator_Mod_Manager {
             }
 
             lc.CreateSortedLists();
+            lc.SortedFileListComplete();
         }
 
         /// <summary>
@@ -547,7 +581,7 @@ namespace Farming_Simulator_Mod_Manager {
         public static void EditGroupMod(string key) {
             var reg = new RegWork(true);
             var pth = string.Empty;
-            var dic = Utils.GetFileListing();
+            var dic = Utils.CompleteSortedList;
             
             if (dic != null && dic.Any(v => String.Equals(v.Key, key, StringComparison.OrdinalIgnoreCase)))
                 dic.TryGetValue(key, out pth);
@@ -565,11 +599,17 @@ namespace Farming_Simulator_Mod_Manager {
         /// </summary>
         /// <param name="mod">The mod.</param>
         public static void DeleteGroupMod(string mod) {
+            var hash = Utils.HashListing;
             var lc = new ListCreator();
             lc.SortedFileListComplete(false);
-            var dic = Utils.GetFileListing();
+            var dic = Utils.CompleteSortedList;
             dic.TryGetValue(mod, out var fnd);
-            DeleteFiles.DeleteFilesOrFolders(fnd + @"\" + mod);
+            hash.TryGetValue(mod, out var fndHash);
+            if (!fndHash.IsNullOrEmpty()) {
+                hash.Remove(mod);
+            }
+            Utils.WriteHashList(hash);
+            DeleteFileA(fnd + @"\" + mod);
             
             lc.CreateSortedLists();
             lc.SortedFileListComplete();
@@ -584,7 +624,7 @@ namespace Farming_Simulator_Mod_Manager {
             var reg = new RegWork(true);
             string prof;
             var dic = Utils.GetGroupFileListing(grp);
-            var dic2 = Utils.GetProfileFileList(); ;
+            var dic2 = Utils.ProfileFileList; ;
             var frn = Application.OpenForms.OfType<Form1>().Single();
             string profXml;
 
@@ -593,7 +633,7 @@ namespace Farming_Simulator_Mod_Manager {
                     prof = reg.Read(Fs11RegKeys.FS11_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     profXml = prof + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml";
                     foreach (var v in dic) {
-                        frn.CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
+                        CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
                         if (dic.ContainsKey(v.Key)) continue;
                         dic2.Add(v.Key, v.Value);
                     }
@@ -604,7 +644,7 @@ namespace Farming_Simulator_Mod_Manager {
                     prof = reg.Read(Fs13RegKeys.FS13_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     profXml = prof + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml";
                     foreach (var v in dic) {
-                        frn.CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
+                        CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
                         if (dic.ContainsKey(v.Key)) continue;
                         dic2.Add(v.Key, v.Value);
                     }
@@ -615,7 +655,7 @@ namespace Farming_Simulator_Mod_Manager {
                     prof = reg.Read(Fs15RegKeys.FS15_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     profXml = prof + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml";
                     foreach (var v in dic) {
-                        frn.CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
+                        CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
                         if (dic.ContainsKey(v.Key)) continue;
                         dic2.Add(v.Key, v.Value);
                     }
@@ -626,7 +666,7 @@ namespace Farming_Simulator_Mod_Manager {
                     prof = reg.Read(Fs17RegKeys.FS17_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     profXml = prof + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml";
                     foreach (var v in dic) {
-                        frn.CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
+                        CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
                         if (dic2.ContainsKey(v.Key)) continue;
                         dic2.Add(v.Key, v.Value);
                     }
@@ -637,7 +677,7 @@ namespace Farming_Simulator_Mod_Manager {
                     prof = reg.Read(FS19RegKeys.FS19_PROFILES) + reg.Read(RegKeys.CURRENT_PROFILE) + @"\";
                     profXml = prof + reg.Read(RegKeys.CURRENT_PROFILE) + ".xml";
                     foreach (var v in dic) {
-                        frn.CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
+                        CreateLink(prof + v.Key, v.Value + @"\" + v.Key);
                         if (dic.ContainsKey(v.Key)) continue;
                         dic2.Add(v.Key, v.Value);
                     }
@@ -647,6 +687,61 @@ namespace Farming_Simulator_Mod_Manager {
             }
 
             frn.SetLoadProfile();
+        }
+
+        /// <summary>
+        /// Verifies the mods.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        public static void VerifyMods(string file) {
+            var reg = new RegWork(true);
+            var gam = reg.Read(RegKeys.CURRENT_GAME);
+            string pth = null;
+            var lc = new ListCreator();
+
+            switch (gam) {
+                case "FS11":
+                    pth = reg.Read(Fs11RegKeys.FS11_BACKUP) + @"Specials\" + file;
+                    break;
+                case "FS13":
+                    pth = reg.Read(Fs13RegKeys.FS13_BACKUP) + @"Specials\" + file;
+                    break;
+                case "FS15":
+                    pth = reg.Read(Fs15RegKeys.FS15_BACKUP) + @"Specials\" + file;
+                    break;
+                case "FS17":
+                    pth = reg.Read(Fs17RegKeys.FS17_BACKUP) + @"Specials\" + file;
+                    break;
+                case "FS19":
+                    pth = reg.Read(FS19RegKeys.FS19_BACKUP) + @"Specials\" + file;
+                    break;
+            }
+
+            var cmpList = Utils.CompleteSortedList;
+            var hash = Utils.HashListing;
+            var lst = new List<string>();
+
+            var dic = Serializer.DeserializeDictionary(pth);
+            foreach (var v in dic) {
+                var tmp = v.Value + @"\" + v.Key;
+                if (tmp.FileExists()) continue;
+                cmpList.Remove(v.Key);
+                hash.Remove(v.Key);
+                lst.Add(v.Key);
+            }
+
+            if (lst.Count > 0) {
+                foreach (var v in lst) {
+                    if (dic.ContainsKey(v.GetFileName())) {
+                        dic.Remove(v.GetFileName());
+                    }
+                }
+            }
+
+            Utils.WriteHashList(hash);
+            Utils.WriteSpecials(dic, file);
+            lc.SortedFileListComplete();
+            MsgBx.Msg("Specials Verified and corrected", "Verifier");
         }
     }
 }

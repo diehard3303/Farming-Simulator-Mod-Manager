@@ -141,7 +141,7 @@ namespace Farming_Simulator_Mod_Manager {
         /// <returns></returns>
         public static IEnumerable<string> ProfileModLoader() {
             var lst = new List<string>();
-            var dic = Utils.GetProfileFileList();
+            var dic = Utils.ProfileFileList;
 
             foreach (var v in dic) {
                 lst.Add(v.Key);
