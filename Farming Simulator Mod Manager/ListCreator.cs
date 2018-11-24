@@ -31,6 +31,7 @@ using System.IO;
 using Extensions;
 
 namespace Farming_Simulator_Mod_Manager {
+
     internal class ListCreator {
         private string FolderPath { set; get; }
 
@@ -43,7 +44,6 @@ namespace Farming_Simulator_Mod_Manager {
             if (tmp.IsNullOrEmpty()) return;
             var src = string.Empty;
             var reg = new RegWork(true);
-            var dicPath = string.Empty;
             Dictionary<string, string> sl = null;
 
             var pth = string.Empty;
@@ -194,7 +194,7 @@ namespace Farming_Simulator_Mod_Manager {
 
         private static bool CheckPath(string t) {
             var inFo = new DirectoryInfo(t);
-            var fnd =inFo.GetSymbolicLinkTarget();
+            var fnd = inFo.GetSymbolicLinkTarget();
             return fnd.IsNullOrEmpty();
         }
     }

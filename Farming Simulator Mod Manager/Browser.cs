@@ -29,7 +29,9 @@
 using System.Diagnostics;
 
 namespace Farming_Simulator_Mod_Manager {
+
     internal static class Browser {
+
         /// <summary>
         ///     Browses the folders.
         /// </summary>
@@ -37,16 +39,16 @@ namespace Farming_Simulator_Mod_Manager {
         public static void BrowseFolders(string fold) {
             var reg = new RegWork(true);
             var gam = reg.Read(RegKeys.CURRENT_GAME);
-            const string modList = "sortedFileListComplete.xml";
+            const string MOD_LIST = "sortedFileListComplete.xml";
             var pth = string.Empty;
 
             switch (fold) {
                 case "repo":
                     switch (gam) {
-                       case "FS11":
+                        case "FS11":
                             pth = reg.Read(Fs11RegKeys.FS11_REPO);
                             break;
-                        
+
                         case "FS13":
                             pth = reg.Read(Fs13RegKeys.FS13_REPO);
                             break;
@@ -58,7 +60,7 @@ namespace Farming_Simulator_Mod_Manager {
                         case "FS17":
                             pth = reg.Read(Fs17RegKeys.FS17_REPO);
                             break;
-                        
+
                         case "FS19":
                             pth = reg.Read(FS19RegKeys.FS19_REPO);
                             break;
@@ -71,7 +73,7 @@ namespace Farming_Simulator_Mod_Manager {
                         case "FS11":
                             pth = reg.Read(Fs11RegKeys.FS11_BACKUP);
                             break;
-                        
+
                         case "FS13":
                             pth = reg.Read(Fs13RegKeys.FS13_BACKUP);
                             break;
@@ -83,7 +85,7 @@ namespace Farming_Simulator_Mod_Manager {
                         case "FS17":
                             pth = reg.Read(Fs17RegKeys.FS17_BACKUP);
                             break;
-                        
+
                         case "FS19":
                             pth = reg.Read(FS19RegKeys.FS19_BACKUP);
                             break;
@@ -96,7 +98,7 @@ namespace Farming_Simulator_Mod_Manager {
                         case "FS11":
                             pth = reg.Read(Fs11RegKeys.FS11_GROUPS);
                             break;
-                        
+
                         case "FS13":
                             pth = reg.Read(Fs13RegKeys.FS13_GROUPS);
                             break;
@@ -108,7 +110,7 @@ namespace Farming_Simulator_Mod_Manager {
                         case "FS17":
                             pth = reg.Read(Fs17RegKeys.FS17_GROUPS);
                             break;
-                        
+
                         case "FS19":
                             pth = reg.Read(FS19RegKeys.FS19_GROUPS);
                             break;
@@ -121,7 +123,7 @@ namespace Farming_Simulator_Mod_Manager {
                         case "FS11":
                             pth = reg.Read(Fs11RegKeys.FS11_WORK);
                             break;
-                        
+
                         case "FS13":
                             pth = reg.Read(Fs13RegKeys.FS13_WORK);
                             break;
@@ -133,7 +135,7 @@ namespace Farming_Simulator_Mod_Manager {
                         case "FS17":
                             pth = reg.Read(Fs17RegKeys.FS17_WORK);
                             break;
-                        
+
                         case "FS19":
                             pth = reg.Read(FS19RegKeys.FS19_WORK);
                             break;
@@ -144,23 +146,23 @@ namespace Farming_Simulator_Mod_Manager {
                 case "list":
                     switch (gam) {
                         case "FS11":
-                            pth = reg.Read(Fs11RegKeys.FS11_XML) + modList;
+                            pth = reg.Read(Fs11RegKeys.FS11_XML) + MOD_LIST;
                             break;
-                        
+
                         case "FS13":
-                            pth = reg.Read(Fs13RegKeys.FS13_XML) + modList;
+                            pth = reg.Read(Fs13RegKeys.FS13_XML) + MOD_LIST;
                             break;
 
                         case "FS15":
-                            pth = reg.Read(Fs15RegKeys.FS15_XML) + modList;
+                            pth = reg.Read(Fs15RegKeys.FS15_XML) + MOD_LIST;
                             break;
 
                         case "FS17":
-                            pth = reg.Read(Fs17RegKeys.FS17_XML) + modList;
+                            pth = reg.Read(Fs17RegKeys.FS17_XML) + MOD_LIST;
                             break;
-                        
+
                         case "FS19":
-                            pth = reg.Read(FS19RegKeys.FS19_XML) + modList;
+                            pth = reg.Read(FS19RegKeys.FS19_XML) + MOD_LIST;
                             break;
                     }
 
@@ -171,15 +173,19 @@ namespace Farming_Simulator_Mod_Manager {
                         case "FS11":
                             pth = reg.Read(Fs11RegKeys.FS11_GROUPS) + "BypassSorting.xml";
                             break;
+
                         case "FS13":
                             pth = reg.Read(Fs13RegKeys.FS13_GROUPS) + "BypassSorting.xml";
                             break;
+
                         case "FS15":
                             pth = reg.Read(Fs15RegKeys.FS15_GROUPS) + "BypassSorting.xml";
                             break;
+
                         case "FS17":
                             pth = reg.Read(Fs17RegKeys.FS17_GROUPS) + "BypassSorting.xml";
                             break;
+
                         case "FS19":
                             pth = reg.Read(FS19RegKeys.FS19_GROUPS) + "BypassSorting.xml";
                             break;

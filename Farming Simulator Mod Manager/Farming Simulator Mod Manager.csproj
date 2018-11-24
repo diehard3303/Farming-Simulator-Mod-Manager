@@ -17,12 +17,12 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-      <Optimize>true</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-      <DocumentationFile>bin\Debug\Farming Simulator Mod Manager.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Farming Simulator Mod Manager.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,28 +33,28 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-    <PropertyGroup>
-        <StartupObject>Farming_Simulator_Mod_Manager.Program</StartupObject>
-    </PropertyGroup>
-    <PropertyGroup>
-        <ApplicationIcon>ape.ico</ApplicationIcon>
-    </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Farming_Simulator_Mod_Manager.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ape.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
-      <Reference Include="Extensions">
-          <HintPath>C:\Users\dieha\OneDrive\Code\Extensions\Extensions\bin\Debug\Extensions.dll</HintPath>
-      </Reference>
-      <Reference Include="FastColoredTextBox">
-          <HintPath>..\..\ModManagerUlt\ModManagerUlt\bin\Debug\FastColoredTextBox.dll</HintPath>
-      </Reference>
-      <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-          <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
-      </Reference>
-      <Reference Include="Microsoft.VisualBasic"/>
-      <Reference Include="SevenZipSharp">
-          <HintPath>..\..\ModManagerUlt\ModManagerUlt\bin\Debug\SevenZipSharp.dll</HintPath>
-      </Reference>
+    <Reference Include="Extensions">
+      <HintPath>C:\Users\dieha\OneDrive\Code\Extensions\Extensions\bin\Debug\Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="FastColoredTextBox">
+      <HintPath>..\..\ModManagerUlt\ModManagerUlt\bin\Debug\FastColoredTextBox.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="SevenZipSharp">
+      <HintPath>..\..\ModManagerUlt\ModManagerUlt\bin\Debug\SevenZipSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-      <Reference Include="System.Configuration"/>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -67,103 +67,112 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-      <Compile Include="Backup.cs"/>
-      <Compile Include="Browser.cs"/>
-      <Compile Include="ChangeSiloAmount.cs"/>
-      <Compile Include="Creation.cs">
-          <SubType>Form</SubType>
-      </Compile>
-      <Compile Include="Creation.Designer.cs">
-          <DependentUpon>Creation.cs</DependentUpon>
-      </Compile>
-      <Compile Include="DeleteFiles.cs"/>
-      <Compile Include="EditMod.cs">
-          <SubType>Form</SubType>
-      </Compile>
-      <Compile Include="EditMod.designer.cs">
-          <DependentUpon>EditMod.cs</DependentUpon>
-      </Compile>
-      <Compile Include="EtsInit.cs"/>
-      <Compile Include="EtsLoader.cs"/>
-      <Compile Include="EtsRegKeys.cs"/>
-      <Compile Include="FileCopy.cs"/>
-      <Compile Include="FileCopyMove.cs"/>
-      <Compile Include="FileWriter.cs"/>
-      <Compile Include="FolderBox.cs">
-          <SubType>Form</SubType>
-      </Compile>
-      <Compile Include="FolderBox.designer.cs">
-          <DependentUpon>FolderBox.cs</DependentUpon>
-      </Compile>
-      <Compile Include="FolderCreator.cs"/>
+    <Compile Include="Backup.cs" />
+    <Compile Include="Browser.cs" />
+    <Compile Include="ChangeSiloAmount.cs" />
+    <Compile Include="Chooser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Chooser.Designer.cs">
+      <DependentUpon>Chooser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Creation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Creation.Designer.cs">
+      <DependentUpon>Creation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeleteFiles.cs" />
+    <Compile Include="EditMod.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditMod.designer.cs">
+      <DependentUpon>EditMod.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EtsInit.cs" />
+    <Compile Include="EtsLoader.cs" />
+    <Compile Include="EtsRegKeys.cs" />
+    <Compile Include="FileCopy.cs" />
+    <Compile Include="FileCopyMove.cs" />
+    <Compile Include="FileWriter.cs" />
+    <Compile Include="FolderBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FolderBox.designer.cs">
+      <DependentUpon>FolderBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FolderCreator.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-      <Compile Include="Fs11RegKeys.cs"/>
-      <Compile Include="FS13RegKeys.cs"/>
-      <Compile Include="Fs15RegKeys.cs"/>
-      <Compile Include="Fs17.cs"/>
-      <Compile Include="FS17RegKeys.cs"/>
-      <Compile Include="FS19RegKeys.cs"/>
-      <Compile Include="FSCheatMoney.cs"/>
-      <Compile Include="FsUtils.cs"/>
-      <Compile Include="FSZip.cs"/>
-      <Compile Include="GameInfo.cs"/>
-      <Compile Include="GetFilesFolders.cs"/>
-      <Compile Include="Hasher.cs"/>
-      <Compile Include="InitFarmSim.cs"/>
-      <Compile Include="ListCreator.cs"/>
-      <Compile Include="Loader.cs"/>
-      <Compile Include="Mover.cs">
-          <SubType>Form</SubType>
-      </Compile>
-      <Compile Include="Mover.designer.cs">
-          <DependentUpon>Mover.cs</DependentUpon>
-      </Compile>
-      <Compile Include="MsgBx.cs"/>
-      <Compile Include="ProfileCopy.cs"/>
+    <Compile Include="Fs11RegKeys.cs" />
+    <Compile Include="FS13RegKeys.cs" />
+    <Compile Include="Fs15RegKeys.cs" />
+    <Compile Include="Fs17.cs" />
+    <Compile Include="FS17RegKeys.cs" />
+    <Compile Include="FS19RegKeys.cs" />
+    <Compile Include="FSCheatMoney.cs" />
+    <Compile Include="FsUtils.cs" />
+    <Compile Include="FSZip.cs" />
+    <Compile Include="GameInfo.cs" />
+    <Compile Include="GetFilesFolders.cs" />
+    <Compile Include="Hasher.cs" />
+    <Compile Include="InitFarmSim.cs" />
+    <Compile Include="ListCreator.cs" />
+    <Compile Include="Loader.cs" />
+    <Compile Include="Mover.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Mover.designer.cs">
+      <DependentUpon>Mover.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MsgBx.cs" />
+    <Compile Include="ProfileCopy.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-      <Compile Include="ReadLogFile.cs"/>
-      <Compile Include="RegKeys.cs"/>
-      <Compile Include="RegWork.cs"/>
-      <Compile Include="Results.cs">
-          <SubType>Form</SubType>
-      </Compile>
-      <Compile Include="Results.Designer.cs">
-          <DependentUpon>Results.cs</DependentUpon>
-      </Compile>
-      <Compile Include="Search.cs"/>
-      <Compile Include="Serializer.cs"/>
-      <Compile Include="Specials.cs">
-          <SubType>Form</SubType>
-      </Compile>
-      <Compile Include="Specials.Designer.cs">
-          <DependentUpon>Specials.cs</DependentUpon>
-      </Compile>
-      <Compile Include="SymLinkCheck.cs"/>
-      <Compile Include="UpdateSystem.cs"/>
-      <Compile Include="Utils.cs"/>
-      <Compile Include="Vars.cs"/>
-      <Compile Include="Working.cs"/>
-      <EmbeddedResource Include="Creation.resx">
-          <DependentUpon>Creation.cs</DependentUpon>
-      </EmbeddedResource>
-      <EmbeddedResource Include="EditMod.resx">
-          <DependentUpon>EditMod.cs</DependentUpon>
-      </EmbeddedResource>
-      <EmbeddedResource Include="FolderBox.resx">
-          <DependentUpon>FolderBox.cs</DependentUpon>
-      </EmbeddedResource>
-      <EmbeddedResource Include="Form1.resx">
-          <DependentUpon>Form1.cs</DependentUpon>
-      </EmbeddedResource>
-      <EmbeddedResource Include="Mover.resx">
-          <DependentUpon>Mover.cs</DependentUpon>
-      </EmbeddedResource>
+    <Compile Include="ReadLogFile.cs" />
+    <Compile Include="RegKeys.cs" />
+    <Compile Include="RegWork.cs" />
+    <Compile Include="Results.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Results.Designer.cs">
+      <DependentUpon>Results.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Search.cs" />
+    <Compile Include="Serializer.cs" />
+    <Compile Include="Specials.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Specials.Designer.cs">
+      <DependentUpon>Specials.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SymLinkCheck.cs" />
+    <Compile Include="UpdateSystem.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="Vars.cs" />
+    <Compile Include="Working.cs" />
+    <EmbeddedResource Include="Chooser.resx">
+      <DependentUpon>Chooser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Creation.resx">
+      <DependentUpon>Creation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditMod.resx">
+      <DependentUpon>EditMod.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FolderBox.resx">
+      <DependentUpon>FolderBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mover.resx">
+      <DependentUpon>Mover.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -173,13 +182,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-      <EmbeddedResource Include="Results.resx">
-          <DependentUpon>Results.cs</DependentUpon>
-      </EmbeddedResource>
-      <EmbeddedResource Include="Specials.resx">
-          <DependentUpon>Specials.cs</DependentUpon>
-      </EmbeddedResource>
-      <None Include="packages.config"/>
+    <EmbeddedResource Include="Results.resx">
+      <DependentUpon>Results.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Specials.resx">
+      <DependentUpon>Specials.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -193,8 +202,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-    <ItemGroup>
-        <Content Include="ape.ico"/>
-    </ItemGroup>
+  <ItemGroup>
+    <Content Include="ape.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

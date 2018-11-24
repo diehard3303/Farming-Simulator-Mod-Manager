@@ -130,6 +130,9 @@ namespace Farming_Simulator_Mod_Manager {
                     break;
 
                 case "FS19":
+                    extPath = reg.Read(FS19RegKeys.FS19_WORK);
+                    dic = Serializer.DeserializeDictionary(
+                        reg.Read(FS19RegKeys.FS19_XML) + "sortedFileListComplete.xml");
                     break;
             }
 

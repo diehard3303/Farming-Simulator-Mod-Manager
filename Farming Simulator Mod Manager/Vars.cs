@@ -67,37 +67,6 @@ namespace Farming_Simulator_Mod_Manager {
         public static Dictionary<string, string> Dict { set; get; }
 
         /// <summary>
-        /// Sorted file list complete path.
-        /// </summary>
-        /// <returns></returns>
-        public static string SortedFileListCompletePath() {
-            var reg = new RegWork(true);
-            var gi = new GameInfo();
-            var gam = gi.GetGame();
-            var pth = string.Empty;
-
-            switch (gam) {
-                case "FS11":
-                    pth = reg.Read(Fs11RegKeys.FS11_XML) + "sortedFileListComplete.xml";
-                    break;
-                case "FS13":
-                    pth = reg.Read(Fs13RegKeys.FS13_XML) + "sortedFileListComplete.xml";
-                    break;
-                case "FS15":
-                    pth = reg.Read(Fs15RegKeys.FS15_XML) + "sortedFileListComplete.xml";
-                    break;
-                case "FS17":
-                    pth = reg.Read(Fs17RegKeys.FS17_XML) + "sortedFileListComplete.xml";
-                    break;
-                case "FS19":
-                    pth = reg.Read(FS19RegKeys.FS19_XML) + "sortedFileListComplete.xml";
-                    break;
-            }
-
-            return pth;
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether [hard link].
         /// </summary>
         /// <value>

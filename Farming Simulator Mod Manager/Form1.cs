@@ -26,15 +26,16 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
+using Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Extensions;
 using static Microsoft.VisualBasic.Interaction;
 
 namespace Farming_Simulator_Mod_Manager {
+
     /// <summary>
     /// </summary>
     /// <seealso cref="System.Windows.Forms.Form" />
@@ -50,63 +51,17 @@ namespace Farming_Simulator_Mod_Manager {
         ///     Initializes a new instance of the <see cref="Form1" /> class.
         /// </summary>
         /// <inheritdoc />
-        public Form1() {
-            InitializeComponent();
-        }
+        public Form1() => InitializeComponent();
 
         /// <summary>
+        ///     Initializes the start up.
         /// </summary>
-        /// <param name="lpFileName"></param>
-        /// <param name="lpExistingFileName"></param>
-        /// <param name="lpSecurityAttributes"></param>
-        /// <returns></returns>
-        [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
-        private static extern bool CreateHardLink(
-            string lpFileName,
-            string lpExistingFileName,
-            IntPtr lpSecurityAttributes
-        );
+        public void InitStartUp() {
+            lstGroups.Items.Clear();
+            var lst = Loader.GroupLoader;
+            foreach (var v in lst) lstGroups.Items.Add(v.GetLastFolderName());
 
-
-        private void btnExit_Click(object sender, EventArgs e) {
-            Application.Exit();
-        }
-
-        private void rbFarmSim17_CheckedChanged(object sender, EventArgs e) {
-            SetSimFs17();
-        }
-
-        /// <summary>
-        ///     Sets the sim FS17.
-        /// </summary>
-        public void SetSimFs17() {
-            if (!rbFarmSim17.Checked) return;
-            InitFarmSimulator();
-            var reg = new RegWork(true);
-            reg.Write(RegKeys.CURRENT_GAME, FS17);
-            var lst = Loader.ProfileLoader;
-            lstProfiles.Items.Clear();
-            foreach (var v in lst) lstProfiles.Items.Add(v.GetLastFolderName());
-
-            SetProfileCount();
-            InitStartUp();
-            lblGame.Text = @"Game: FS17";
-            lblProf.Text = @"Profile:";
-        }
-
-        private void SetProfileCount() {
-            lstProfileMods.Items.Clear();
-            lblProfileCount.Text = $@"Profiles: {lstProfiles.Items.Count}";
-            lblProfileModCount.Text = @"Profile Mods: ";
-        }
-
-        private static void InitFarmSimulator() {
-            var init = new InitFarmSim();
-            init.Initialize();
-        }
-
-        private void lstProfiles_SelectedIndexChanged(object sender, EventArgs e) {
-            SetLoadProfile();
+            lblGroupCount.Text = $@"Groups: {lstGroups.Items.Count}";
         }
 
         /// <summary>
@@ -121,13 +76,8 @@ namespace Farming_Simulator_Mod_Manager {
             lstProfileMods.Items.Clear();
             if (lst.IsNull()) return;
             foreach (var v in lst) lstProfileMods.Items.Add(v.GetFileName());
-
             lblProfileModCount.Text = $@"Profile Mods:  {lstProfileMods.Items.Count}";
             Working.ModifyGameSettings();
-        }
-
-        private void rbFarmSim11_CheckedChanged(object sender, EventArgs e) {
-            SetSimFs11();
         }
 
         /// <summary>
@@ -148,10 +98,6 @@ namespace Farming_Simulator_Mod_Manager {
             lblProf.Text = @"Profile:";
         }
 
-        private void rbFarmSim13_CheckedChanged(object sender, EventArgs e) {
-            SetSimFs13();
-        }
-
         /// <summary>
         ///     Sets the sim FS13.
         /// </summary>
@@ -168,10 +114,6 @@ namespace Farming_Simulator_Mod_Manager {
             InitStartUp();
             lblGame.Text = @"Game: FS13";
             lblProf.Text = @"Profile:";
-        }
-
-        private void rbFarmSim15_CheckedChanged(object sender, EventArgs e) {
-            SetSimFs15();
         }
 
         /// <summary>
@@ -192,8 +134,22 @@ namespace Farming_Simulator_Mod_Manager {
             lblProf.Text = @"Profile:";
         }
 
-        private void rbFarmSim19_CheckedChanged(object sender, EventArgs e) {
-            SetSimFs19();
+        /// <summary>
+        ///     Sets the sim FS17.
+        /// </summary>
+        public void SetSimFs17() {
+            if (!rbFarmSim17.Checked) return;
+            InitFarmSimulator();
+            var reg = new RegWork(true);
+            reg.Write(RegKeys.CURRENT_GAME, FS17);
+            var lst = Loader.ProfileLoader;
+            lstProfiles.Items.Clear();
+            foreach (var v in lst) lstProfiles.Items.Add(v.GetLastFolderName());
+
+            SetProfileCount();
+            InitStartUp();
+            lblGame.Text = @"Game: FS17";
+            lblProf.Text = @"Profile:";
         }
 
         /// <summary>
@@ -214,109 +170,69 @@ namespace Farming_Simulator_Mod_Manager {
             lblProf.Text = @"Profile:";
         }
 
-
-        private void removeModToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (lstProfileMods.SelectedItem.IsNull()) return;
-            var mod = Working.DeleteProfileMod(lstProfileMods.SelectedItem.ToString());
-            SetLoadProfile();
-            MsgBx.Msg(mod.GetFileName() + " Was removed from Profile", "Mod Remover");
-        }
-
-
-        private void Form1_Load(object sender, EventArgs e) {
-            InitRb();
-        }
-
-        private void InitRb() {
-            radioButton10.Checked = true;
-            Vars.HardLink = true;
-            Vars.SoftLink = false;
-            Vars.FileCopy = false;
-            rbFarmSim11.Checked = false;
-            rbFarmSim13.Checked = false;
-            rbFarmSim15.Checked = false;
-            rbFarmSim17.Checked = false;
-            rbFarmSim19.Checked = false;
-        }
-
         /// <summary>
-        ///     Initializes the start up.
         /// </summary>
-        public void InitStartUp() {
-            lstGroups.Items.Clear();
-            var lst = Loader.GroupLoader;
-            foreach (var v in lst) lstGroups.Items.Add(v.GetLastFolderName());
+        /// <param name="lpFileName"></param>
+        /// <param name="lpExistingFileName"></param>
+        /// <param name="lpSecurityAttributes"></param>
+        /// <returns></returns>
+        [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
+        private static extern bool CreateHardLink(
+            string lpFileName,
+            string lpExistingFileName,
+            IntPtr lpSecurityAttributes
+        );
 
-            lblGroupCount.Text = $@"Groups: {lstGroups.Items.Count}";
+        private static void InitFarmSimulator() {
+            var init = new InitFarmSim();
+            init.Initialize();
         }
 
-        private void lstGroups_SelectedIndexChanged(object sender, EventArgs e) {
-            LoadGroupMods();
+        private void addGroupToNoSearchGroupToolStripMenuItem_Click(object sender, EventArgs e) => AddToNoSearchList();
+
+        private void addModToProfileToolStripMenuItem1_Click_1(object sender, EventArgs e) {
+            if (lstGroupMods.SelectedItem.ToString().IsNullOrEmpty()) return;
+            var mod = lstGroupMods.SelectedItem.ToString();
+            Working.AddModToProfile(mod);
         }
 
-        private void LoadGroupMods() {
+        private void AddToNoSearchList() {
             if (lstGroups.SelectedItem.IsNull()) return;
-            Vars.FolderName = lstGroups.SelectedItem.ToString();
-            lstGroupMods.Items.Clear();
-            var lst = Loader.GroupModLoader(lstGroups.SelectedItem.ToString());
-            foreach (var v in lst) lstGroupMods.Items.Add(v.GetFileName());
+            var tmp = lstGroups.SelectedItem.ToString();
+            var dic = Utils.ByPassList;
+            var reg = new RegWork(true);
+            var gi = new GameInfo();
+            var gam = gi.GetGame();
+            string grp = null;
 
-            lblGroupModsCount.Text = $@"Group Mods: {lstGroupMods.Items.Count}";
+            switch (gam) {
+                case "FS11":
+                    grp = reg.Read(Fs11RegKeys.FS11_GROUPS);
+                    break;
+
+                case "FS13":
+                    grp = reg.Read(Fs13RegKeys.FS13_GROUPS);
+                    break;
+
+                case "FS15":
+                    grp = reg.Read(Fs15RegKeys.FS15_GROUPS);
+                    break;
+
+                case "FS17":
+                    grp = reg.Read(Fs17RegKeys.FS17_GROUPS);
+                    break;
+
+                case "FS19":
+                    grp = reg.Read(FS19RegKeys.FS19_GROUPS);
+                    break;
+            }
+
+            if (dic.ContainsKey(tmp)) return;
+            dic.Add(tmp, grp);
+            Utils.WriteByPassList(dic);
         }
 
-        private void eleteModToolStripMenuItem_Click(object sender, EventArgs e) {
-        }
-
-        private void startFarmSimulatorToolStripMenuItem_Click(object sender, EventArgs e) {
-            Loader.GameStarter();
-        }
-
-        private void startFarmSimulatorToolStripMenuItem1_Click(object sender, EventArgs e) {
-            Loader.GameStarter();
-        }
-
-        private void startFarmSimulatorToolStripMenuItem2_Click(object sender, EventArgs e) {
-            Loader.GameStarter();
-        }
-
-        private void startFarmSimulatorToolStripMenuItem3_Click(object sender, EventArgs e) {
-            Loader.GameStarter();
-        }
-
-        private void radioButton1_CheckedChanged(object sender, EventArgs e) {
-            if (!radioButton1.Checked) return;
-            Browser.BrowseFolders("repo");
-            ResetRb();
-        }
-
-        private void radioButton3_CheckedChanged(object sender, EventArgs e) {
-            if (!radioButton3.Checked) return;
-            Browser.BrowseFolders("work");
-            ResetRb();
-        }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e) {
-            if (!radioButton2.Checked) return;
-            Browser.BrowseFolders("groups");
-            ResetRb();
-        }
-
-        private void radioButton4_CheckedChanged(object sender, EventArgs e) {
-            if (!radioButton4.Checked) return;
-            Browser.BrowseFolders("backup");
-            ResetRb();
-        }
-
-        private void ResetRb() {
-            radioButton1.Checked = false;
-            radioButton2.Checked = false;
-            radioButton3.Checked = false;
-            radioButton4.Checked = false;
-            radioButton5.Checked = false;
-            radioButton6.Checked = false;
-            radioButton7.Checked = false;
-            radioButton8.Checked = false;
-        }
+        private void btnExit_Click(object sender, EventArgs e) => Application.Exit();
 
         private void button1_Click(object sender, EventArgs e) {
             var lc = new ListCreator();
@@ -324,98 +240,16 @@ namespace Farming_Simulator_Mod_Manager {
             lc.SortedFileListComplete();
         }
 
-        private void radioButton8_CheckedChanged(object sender, EventArgs e) {
-            if (!radioButton8.Checked) return;
-            var re = new ReadLogFile();
-            re.ReadLogFiles();
-            ResetRb();
-        }
-
-        private void radioButton5_CheckedChanged(object sender, EventArgs e) {
-            if (!radioButton5.Checked) return;
-            Browser.BrowseFolders("list");
-            ResetRb();
-        }
-
-        private void radioButton7_CheckedChanged(object sender, EventArgs e) {
-            if (!radioButton7.Checked) return;
-            var em = new EditMod();
-            em.ShowDialog();
-            ResetRb();
-        }
-
-        private void radioButton6_CheckedChanged(object sender, EventArgs e) {
-            //specials
-            
-        }
-
-        private void radioButton10_CheckedChanged(object sender, EventArgs e) {
-            if (!radioButton10.Checked) return;
-            Vars.HardLink = true;
-            Vars.SoftLink = false;
-            Vars.FileCopy = false;
-        }
-
-        private void radioButton9_CheckedChanged(object sender, EventArgs e) {
-            if (!radioButton9.Checked) return;
-            Vars.SoftLink = true;
-            Vars.HardLink = false;
-            Vars.FileCopy = false;
-        }
-
-        private void radioButton11_CheckedChanged(object sender, EventArgs e) {
-            if (!radioButton11.Checked) return;
-            Vars.FileCopy = true;
-            Vars.SoftLink = false;
-            Vars.HardLink = false;
-        }
-
-        private void hashAllFilesToolStripMenuItem_Click(object sender, EventArgs e) {
-            UpdateSystem.HashAllFiles();
-            MsgBx.Msg("All files Hashed MD5", "Hasher");
-        }
-
-        private void hashCheckProfileToolStripMenuItem_Click(object sender, EventArgs e) {
-            var reg = new RegWork(true);
-            var prof = reg.Read(RegKeys.CURRENT_PROFILE);
-            UpdateSystem.ChkMod(prof);
-        }
-
-        private void deleteProfileToolStripMenuItem1_Click(object sender, EventArgs e) {
-            if (lstProfiles.SelectedItem.IsNull()) return;
-            Working.DeleteProfile();
-        }
-
-        private void copyProfileToolStripMenuItem1_Click(object sender, EventArgs e) {
-            ProfileCopy.CopyProfile();
-        }
-
-        private void saveProfileAsSpecialToolStripMenuItem1_Click(object sender, EventArgs e) {
-            if (lstProfiles.SelectedItem.ToString().IsNull()) return;
-            Vars.Dict = Utils.ProfileFileList;
-            var frm = new Specials();
-            frm.ShowDialog();
-        }
-
-        private void createProfileToolStripMenuItem1_Click(object sender, EventArgs e) {
-            var cre = new Creation {rbCreateProfile = {Checked = true}};
-            cre.ShowDialog();
-        }
-
-        private void deleteGroupToolStripMenuItem1_Click(object sender, EventArgs e) {
-            if (lstGroups.SelectedItem.IsNull()) return;
-            Working.DeleteGroup(lstGroups.SelectedItem.ToString());
-            InitStartUp();
-        }
+        private void copyProfileToolStripMenuItem1_Click(object sender, EventArgs e) => ProfileCopy.CopyProfile();
 
         private void createNewGroupToolStripMenuItem_Click(object sender, EventArgs e) {
-            var cre = new Creation {rbCreateGroup = {Checked = true}};
+            var cre = new Creation { rbCreateGroup = { Checked = true } };
             cre.ShowDialog();
         }
 
-        private void createNewProfileFromGroupToolStripMenuItem1_Click(object sender, EventArgs e) {
-            CreateProfileFromGroup();
-        }
+        private void createNewProfileFromGroupToolStripMenuItem1_Click(object sender, EventArgs e) => CreateProfileFromGroup();
+
+        private void createProfileFromFileMapToolStripMenuItem1_Click(object sender, EventArgs e) => CreateProfileFromMapFile();
 
         private void CreateProfileFromGroup() {
             if (lstGroups.SelectedItem.IsNull()) return;
@@ -440,6 +274,7 @@ namespace Farming_Simulator_Mod_Manager {
 
                     Serializer.SerializeDictionary(proLoc + @"\" + nProf + ".xml", dic);
                     break;
+
                 case "FS13":
                     proLoc = reg.Read(Fs13RegKeys.FS13_PROFILES) + nProf;
                     Directory.CreateDirectory(proLoc);
@@ -454,6 +289,7 @@ namespace Farming_Simulator_Mod_Manager {
 
                     Serializer.SerializeDictionary(proLoc + @"\" + nProf + ".xml", dic);
                     break;
+
                 case "FS15":
                     proLoc = reg.Read(Fs15RegKeys.FS15_PROFILES) + nProf;
                     Directory.CreateDirectory(proLoc);
@@ -468,6 +304,7 @@ namespace Farming_Simulator_Mod_Manager {
 
                     Serializer.SerializeDictionary(proLoc + @"\" + nProf + ".xml", dic);
                     break;
+
                 case "FS17":
                     proLoc = reg.Read(Fs17RegKeys.FS17_PROFILES) + nProf;
                     Directory.CreateDirectory(proLoc);
@@ -482,6 +319,7 @@ namespace Farming_Simulator_Mod_Manager {
 
                     Serializer.SerializeDictionary(proLoc + @"\" + nProf + ".xml", dic);
                     break;
+
                 case "FS19":
                     proLoc = reg.Read(FS19RegKeys.FS19_PROFILES) + nProf;
                     Directory.CreateDirectory(proLoc);
@@ -503,45 +341,6 @@ namespace Farming_Simulator_Mod_Manager {
             foreach (var v in lst) lstProfiles.Items.Add(v.GetLastFolderName());
         }
 
-        private void loadFolderIntoProfileToolStripMenuItem1_Click(object sender, EventArgs e) {
-            if (lstGroups.SelectedItem.IsNull()) return;
-            Working.LoadFolder(lstGroups.SelectedItem.ToString());
-        }
-
-        private void deleteModToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (lstGroupMods.SelectedItem.IsNull()) return;
-            Working.DeleteGroupMod(lstGroupMods.SelectedItem.ToString());
-            LoadGroupMods();
-        }
-
-        private void editModToolStripMenuItem1_Click(object sender, EventArgs e) {
-            if (lstGroupMods.SelectedItem.ToString().IsNullOrEmpty()) return;
-            Working.EditGroupMod(lstGroupMods.SelectedItem.ToString());
-        }
-
-        private void repoWorkToolStripMenuItem_Click_1(object sender, EventArgs e) {
-            var mov = new Mover();
-            mov.ShowDialog();
-        }
-
-        private void moveModToRepoToolStripMenuItem1_Click(object sender, EventArgs e) {
-            if (lstGroupMods.SelectedItem.IsNull()) return;
-            var mod = lstGroupMods.SelectedItem.ToString();
-            var lst = Working.ModToRepo(mod);
-            lstGroupMods.Items.Clear();
-            foreach (var v in lst) lstGroupMods.Items.Add(v.GetFileName());
-        }
-
-        private void addModToProfileToolStripMenuItem1_Click(object sender, EventArgs e) {
-            if (lstGroupMods.SelectedItem.ToString().IsNullOrEmpty()) return;
-            var mod = lstGroupMods.SelectedItem.ToString();
-            Working.AddModToProfile(mod);
-        }
-
-        private void createProfileFromFileMapToolStripMenuItem1_Click(object sender, EventArgs e) {
-            CreateProfileFromMapFile();
-        }
-
         private void CreateProfileFromMapFile() {
             if (lstGroupMods.SelectedItem.IsNull()) return;
             var map = lstGroupMods.SelectedItem.ToString();
@@ -549,7 +348,6 @@ namespace Farming_Simulator_Mod_Manager {
             var gi = new GameInfo();
             var gam = gi.GetGame();
             var reg = new RegWork(true);
-
 
             switch (gam) {
                 case "FS11":
@@ -566,6 +364,7 @@ namespace Farming_Simulator_Mod_Manager {
                     Working.CreateLink(tmp, orig);
                     Serializer.SerializeDictionary(proLoc + @"\" + nam + ".xml", dic);
                     break;
+
                 case "FS13":
                     proLoc = reg.Read(Fs13RegKeys.FS13_PROFILES) + nam;
                     Directory.CreateDirectory(proLoc);
@@ -580,6 +379,7 @@ namespace Farming_Simulator_Mod_Manager {
                     Working.CreateLink(tmp, orig);
                     Serializer.SerializeDictionary(proLoc + @"\" + nam + ".xml", dic);
                     break;
+
                 case "FS15":
                     proLoc = reg.Read(Fs15RegKeys.FS15_PROFILES) + nam;
                     Directory.CreateDirectory(proLoc);
@@ -594,6 +394,7 @@ namespace Farming_Simulator_Mod_Manager {
                     Working.CreateLink(tmp, orig);
                     Serializer.SerializeDictionary(proLoc + @"\" + nam + ".xml", dic);
                     break;
+
                 case "FS17":
                     proLoc = reg.Read(Fs17RegKeys.FS17_PROFILES) + nam;
                     Directory.CreateDirectory(proLoc);
@@ -608,6 +409,7 @@ namespace Farming_Simulator_Mod_Manager {
                     Working.CreateLink(tmp, orig);
                     Serializer.SerializeDictionary(proLoc + @"\" + nam + ".xml", dic);
                     break;
+
                 case "FS19":
                     proLoc = reg.Read(FS19RegKeys.FS19_PROFILES) + nam;
                     Directory.CreateDirectory(proLoc);
@@ -623,10 +425,212 @@ namespace Farming_Simulator_Mod_Manager {
                     Serializer.SerializeDictionary(proLoc + @"\" + nam + ".xml", dic);
                     break;
             }
-
             var lst = Loader.ProfileLoader;
             lstProfiles.Items.Clear();
             foreach (var v in lst) lstProfiles.Items.Add(v.GetLastFolderName());
+        }
+
+        private void createProfileToolStripMenuItem1_Click(object sender, EventArgs e) {
+            var cre = new Creation { rbCreateProfile = { Checked = true } };
+            cre.ShowDialog();
+        }
+
+        private void deleteGroupFilesInProfileToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (lstGroups.SelectedItem.IsNull()) return;
+            Utils.DeleteGroupFileList(lstGroups.SelectedItem.ToString());
+            var lc = new ListCreator();
+            lc.CreateSortedLists();
+            MsgBx.Msg("Profile Files Deleted.", "I/O");
+        }
+
+        private void deleteGroupToolStripMenuItem1_Click(object sender, EventArgs e) {
+            if (lstGroups.SelectedItem.IsNull()) return;
+            Working.DeleteGroup(lstGroups.SelectedItem.ToString());
+            InitStartUp();
+        }
+
+        private void deleteModToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (lstGroupMods.SelectedItem.IsNull()) return;
+            Working.DeleteGroupMod(lstGroupMods.SelectedItem.ToString());
+            LoadGroupMods();
+        }
+
+        private void deleteProfileToolStripMenuItem1_Click(object sender, EventArgs e) {
+            if (lstProfiles.SelectedItem.IsNull()) return;
+            Working.DeleteProfile();
+        }
+
+        private void editModToolStripMenuItem1_Click(object sender, EventArgs e) {
+            if (lstGroupMods.SelectedItem.ToString().IsNullOrEmpty()) return;
+            Working.EditGroupMod(lstGroupMods.SelectedItem.ToString());
+        }
+
+        private void eleteModToolStripMenuItem_Click(object sender, EventArgs e) {
+        }
+
+        private void Form1_Load(object sender, EventArgs e) => InitRb();
+
+        private void hashAllFilesToolStripMenuItem_Click(object sender, EventArgs e) {
+            UpdateSystem.HashAllFiles();
+            MsgBx.Msg("All files Hashed MD5", "Hasher");
+        }
+
+        private void hashCheckProfileToolStripMenuItem_Click(object sender, EventArgs e) {
+            var reg = new RegWork(true);
+            var prof = reg.Read(RegKeys.CURRENT_PROFILE);
+            UpdateSystem.ChkMod(prof);
+        }
+
+        private void InitRb() {
+            radioButton10.Checked = true;
+            Vars.HardLink = true;
+            Vars.SoftLink = false;
+            Vars.FileCopy = false;
+            rbFarmSim11.Checked = false;
+            rbFarmSim13.Checked = false;
+            rbFarmSim15.Checked = false;
+            rbFarmSim17.Checked = false;
+            rbFarmSim19.Checked = false;
+        }
+
+        private void loadFolderIntoProfileToolStripMenuItem1_Click(object sender, EventArgs e) {
+            if (lstGroups.SelectedItem.IsNull()) return;
+            Working.LoadFolder(lstGroups.SelectedItem.ToString());
+        }
+
+        private void LoadGroupMods() {
+            if (lstGroups.SelectedItem.IsNull()) return;
+            Vars.FolderName = lstGroups.SelectedItem.ToString();
+            lstGroupMods.Items.Clear();
+            var lst = Loader.GroupModLoader(lstGroups.SelectedItem.ToString());
+            foreach (var v in lst) lstGroupMods.Items.Add(v.GetFileName());
+
+            lblGroupModsCount.Text = $@"Group Mods: {lstGroupMods.Items.Count}";
+        }
+
+        private void LstGroups_SelectedIndexChanged(object sender, EventArgs e) => LoadGroupMods();
+
+        private void lstProfiles_SelectedIndexChanged(object sender, EventArgs e) => SetLoadProfile();
+
+        private void moveModToRepoToolStripMenuItem1_Click(object sender, EventArgs e) {
+            if (lstGroupMods.SelectedItem.IsNull()) return;
+            var mod = lstGroupMods.SelectedItem.ToString();
+            var lst = Working.ModToRepo(mod);
+            lstGroupMods.Items.Clear();
+            foreach (var v in lst) lstGroupMods.Items.Add(v.GetFileName());
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e) {
+            if (!radioButton1.Checked) return;
+            Browser.BrowseFolders("repo");
+            ResetRb();
+        }
+
+        private void radioButton10_CheckedChanged(object sender, EventArgs e) {
+            if (!radioButton10.Checked) return;
+            Vars.HardLink = true;
+            Vars.SoftLink = false;
+            Vars.FileCopy = false;
+        }
+
+        private void radioButton11_CheckedChanged(object sender, EventArgs e) {
+            if (!radioButton11.Checked) return;
+            Vars.FileCopy = true;
+            Vars.SoftLink = false;
+            Vars.HardLink = false;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e) {
+            if (!radioButton2.Checked) return;
+            Browser.BrowseFolders("groups");
+            ResetRb();
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e) {
+            if (!radioButton3.Checked) return;
+            Browser.BrowseFolders("work");
+            ResetRb();
+        }
+
+        private void radioButton4_CheckedChanged(object sender, EventArgs e) {
+            if (!radioButton4.Checked) return;
+            Browser.BrowseFolders("backup");
+            ResetRb();
+        }
+
+        private void radioButton5_CheckedChanged(object sender, EventArgs e) {
+            if (!radioButton5.Checked) return;
+            Browser.BrowseFolders("list");
+            ResetRb();
+        }
+
+        private void radioButton6_CheckedChanged(object sender, EventArgs e) {
+            //specials
+            if (!radioButton6.Checked) return;
+            var frm = new Chooser();
+            frm.ShowDialog();
+            ResetRb();
+        }
+
+        private void radioButton7_CheckedChanged(object sender, EventArgs e) {
+            if (!radioButton7.Checked) return;
+            var em = new EditMod();
+            em.ShowDialog();
+            ResetRb();
+        }
+
+        private void radioButton8_CheckedChanged(object sender, EventArgs e) {
+            if (!radioButton8.Checked) return;
+            var re = new ReadLogFile();
+            re.ReadLogFiles();
+            ResetRb();
+        }
+
+        private void radioButton9_CheckedChanged(object sender, EventArgs e) {
+            if (!radioButton9.Checked) return;
+            Vars.SoftLink = true;
+            Vars.HardLink = false;
+            Vars.FileCopy = false;
+        }
+
+        private void rbFarmSim11_CheckedChanged(object sender, EventArgs e) => SetSimFs11();
+
+        private void rbFarmSim13_CheckedChanged(object sender, EventArgs e) => SetSimFs13();
+
+        private void rbFarmSim15_CheckedChanged(object sender, EventArgs e) => SetSimFs15();
+
+        private void rbFarmSim17_CheckedChanged(object sender, EventArgs e) => SetSimFs17();
+
+        private void RbFarmSim19_CheckedChanged(object sender, EventArgs e) => SetSimFs19();
+
+        private void RemoveModToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (lstProfileMods.SelectedItem.IsNull()) return;
+            var mod = Working.DeleteProfileMod(lstProfileMods.SelectedItem.ToString());
+            SetLoadProfile();
+            MsgBx.Msg(mod.GetFileName() + " Was removed from Profile", "Mod Remover");
+        }
+
+        private void repoWorkToolStripMenuItem_Click_1(object sender, EventArgs e) {
+            var mov = new Mover();
+            mov.ShowDialog();
+        }
+
+        private void ResetRb() {
+            radioButton1.Checked = false;
+            radioButton2.Checked = false;
+            radioButton3.Checked = false;
+            radioButton4.Checked = false;
+            radioButton5.Checked = false;
+            radioButton6.Checked = false;
+            radioButton7.Checked = false;
+            radioButton8.Checked = false;
+        }
+
+        private void saveProfileAsSpecialToolStripMenuItem1_Click(object sender, EventArgs e) {
+            if (lstProfiles.SelectedItem.ToString().IsNull()) return;
+            Vars.Dict = Utils.ProfileFileList;
+            var frm = new Specials();
+            frm.ShowDialog();
         }
 
         private void searchGroupsToolStripMenuItem1_Click(object sender, EventArgs e) {
@@ -637,48 +641,18 @@ namespace Farming_Simulator_Mod_Manager {
             res.ShowDialog();
         }
 
-        private void addGroupToNoSearchGroupToolStripMenuItem_Click(object sender, EventArgs e) {
-            AddToNoSearchList();
+        private void SetProfileCount() {
+            lstProfileMods.Items.Clear();
+            lblProfileCount.Text = $@"Profiles: {lstProfiles.Items.Count}";
+            lblProfileModCount.Text = @"Profile Mods: ";
         }
 
-        private void AddToNoSearchList() {
-            if (lstGroups.SelectedItem.IsNull()) return;
-            var tmp = lstGroups.SelectedItem.ToString();
-            var dic = Utils.ByPassList;
-            var reg = new RegWork(true);
-            var gi = new GameInfo();
-            var gam = gi.GetGame();
-            string grp = null;
+        private void StartFarmSimulatorToolStripMenuItem_Click(object sender, EventArgs e) => Loader.GameStarter();
 
-            switch (gam) {
-                case "FS11":
-                    grp = reg.Read(Fs11RegKeys.FS11_GROUPS);
-                    break;
-                case "FS13":
-                    grp = reg.Read(Fs13RegKeys.FS13_GROUPS);
-                    break;
-                case "FS15":
-                    grp = reg.Read(Fs15RegKeys.FS15_GROUPS);
-                    break;
-                case "FS17":
-                    grp = reg.Read(Fs17RegKeys.FS17_GROUPS);
-                    break;
-                case "FS19":
-                    grp = reg.Read(FS19RegKeys.FS19_GROUPS);
-                    break;
-            }
+        private void startFarmSimulatorToolStripMenuItem1_Click(object sender, EventArgs e) => Loader.GameStarter();
 
-            if (dic.ContainsKey(tmp)) return;
-            dic.Add(tmp, grp);
-            Utils.WriteByPassList(dic);
-        }
+        private void startFarmSimulatorToolStripMenuItem2_Click(object sender, EventArgs e) => Loader.GameStarter();
 
-        private void deleteGroupFilesInProfileToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (lstGroups.SelectedItem.IsNull()) return;
-            Utils.DeleteGroupFileList(lstGroups.SelectedItem.ToString());
-            var lc = new ListCreator();
-            lc.CreateSortedLists();
-            MsgBx.Msg("Profile Files Deleted.", "I/O");
-        }
+        private void startFarmSimulatorToolStripMenuItem3_Click(object sender, EventArgs e) => Loader.GameStarter();
     }
 }
